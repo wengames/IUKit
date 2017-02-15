@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "IURequest.h"
 
-@interface IUDataFetcher <T : IUBaseModel *> : IURequest
+@interface IUDataFetcher <__covariant T : IUBaseModel *> : IURequest
 
 @property (nonatomic, assign) BOOL autoCancel; // default is YES
 

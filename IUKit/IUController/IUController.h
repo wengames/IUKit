@@ -19,6 +19,7 @@
 #import "UIViewController+IUModalTransition.h"
 #import "IUFadeModalViewController.h"
 #import "IUBottomSheetViewController.h"
+#import "IUWebViewController.h"
 
 // orientation
 #import "UIViewController+IUOrientation.h"

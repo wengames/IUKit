@@ -51,7 +51,7 @@ static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
 
 - (void)iuTextInputRestrict_UITextView_setText:(NSString *)text {
     [self iuTextInputRestrict_UITextView_setText:text];
-    [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification object:self];
+    [self.textInputRestrict _textDidChange:self];
 }
 
 - (UILabel *)__placeholderLabel {
