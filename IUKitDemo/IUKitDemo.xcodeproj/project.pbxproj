@@ -125,6 +125,8 @@
 		84BAD42F1E542D4D006EF1C8 /* UIImage+IURotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4291E542D4D006EF1C8 /* UIImage+IURotation.m */; };
 		84BAD4301E542D4D006EF1C8 /* UIImage+IUTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD42B1E542D4D006EF1C8 /* UIImage+IUTransform.m */; };
 		84BAD4321E542D91006EF1C8 /* IUUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4311E542D91006EF1C8 /* IUUtil.m */; };
+		84BAD4CF1E5452D9006EF1C8 /* IUBottomSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4CE1E5452D9006EF1C8 /* IUBottomSheetViewController.m */; };
+		84BAD4D21E5452F4006EF1C8 /* IUFadeModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -376,6 +378,10 @@
 		84BAD42A1E542D4D006EF1C8 /* UIImage+IUTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+IUTransform.h"; sourceTree = "<group>"; };
 		84BAD42B1E542D4D006EF1C8 /* UIImage+IUTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+IUTransform.m"; sourceTree = "<group>"; };
 		84BAD4311E542D91006EF1C8 /* IUUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUUtil.m; sourceTree = "<group>"; };
+		84BAD4CD1E5452D9006EF1C8 /* IUBottomSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUBottomSheetViewController.h; sourceTree = "<group>"; };
+		84BAD4CE1E5452D9006EF1C8 /* IUBottomSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUBottomSheetViewController.m; sourceTree = "<group>"; };
+		84BAD4D01E5452F4006EF1C8 /* IUFadeModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUFadeModalViewController.h; sourceTree = "<group>"; };
+		84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUFadeModalViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -641,6 +647,10 @@
 				84BAD4111E541FA8006EF1C8 /* UIViewController+IUModalTransition.m */,
 				84BAD4161E542456006EF1C8 /* UIViewController+IUContainView.h */,
 				84BAD4171E542456006EF1C8 /* UIViewController+IUContainView.m */,
+				84BAD4CD1E5452D9006EF1C8 /* IUBottomSheetViewController.h */,
+				84BAD4CE1E5452D9006EF1C8 /* IUBottomSheetViewController.m */,
+				84BAD4D01E5452F4006EF1C8 /* IUFadeModalViewController.h */,
+				84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -977,6 +987,7 @@
 				844397B61E51C02F00EA8989 /* UITabBarController+IUChain.m in Sources */,
 				844397FD1E51CC0000EA8989 /* UITabBarController+IUStatusBar.m in Sources */,
 				8443989B1E529BCE00EA8989 /* MJPropertyKey.m in Sources */,
+				84BAD4D21E5452F4006EF1C8 /* IUFadeModalViewController.m in Sources */,
 				84BAD4211E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.m in Sources */,
 				844398791E52997A00EA8989 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				844398011E51CC0000EA8989 /* IUTransitionAnimator.m in Sources */,
@@ -997,6 +1008,7 @@
 				844398D01E54003A00EA8989 /* IUBackgroundRequestPool.m in Sources */,
 				844397B51E51C02F00EA8989 /* UISwitch+IUChain.m in Sources */,
 				844398CD1E53FA0500EA8989 /* TestModel.m in Sources */,
+				84BAD4CF1E5452D9006EF1C8 /* IUBottomSheetViewController.m in Sources */,
 				844398721E52997A00EA8989 /* AFURLResponseSerialization.m in Sources */,
 				844398771E52997A00EA8989 /* AFImageDownloader.m in Sources */,
 				844398731E52997A00EA8989 /* AFURLSessionManager.m in Sources */,

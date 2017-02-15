@@ -23,7 +23,6 @@
 
 - (void)setModalType:(IUTransitionType)modalType {
     self._iuTransitionDelegate.type = modalType;
-    self.modalPresentationStyle = (modalType == IUTransitionTypeCustom ? UIModalPresentationCustom : UIModalPresentationFullScreen);
 }
 
 - (IUTransitioningDelegate *)_iuTransitionDelegate {

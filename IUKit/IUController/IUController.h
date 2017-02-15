@@ -17,6 +17,8 @@
 #import "UIViewController+IUSubviews.h"
 #import "UIViewController+IUKeyboard.h"
 #import "UIViewController+IUModalTransition.h"
+#import "IUFadeModalViewController.h"
+#import "IUBottomSheetViewController.h"
 
 // orientation
 #import "UIViewController+IUOrientation.h"
