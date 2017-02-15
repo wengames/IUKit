@@ -14,6 +14,10 @@
 - (BOOL)isEmail;
 + (BOOL)evaluateEmailString:(NSString *)string;
 
+/** evaluate string is in phone format or not */
+- (BOOL)isPhone;
++ (BOOL)evaluatePhoneString:(NSString *)string;
+
 /** evaluate string is in identity card format or not */
 - (BOOL)isIdentityCard;
 + (BOOL)evaluateIdentityCardString:(NSString *)string;

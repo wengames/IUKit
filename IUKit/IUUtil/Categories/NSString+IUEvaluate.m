@@ -21,6 +21,17 @@
     return [emailPredicate evaluateWithObject:string];
 }
 
+/** phone */
+- (BOOL)isPhone {
+    return [self.class evaluatePhoneString:self];
+}
+
++ (BOOL)evaluatePhoneString:(NSString *)string {
+    NSString *phoneRegex = @"^1[0-9]{10}$";
+    NSPredicate *phonePredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
+    return [phonePredicate evaluateWithObject:string];
+}
+
 /** identity card */
 - (BOOL)isIdentityCard {
     return [self.class evaluateIdentityCardString:self];

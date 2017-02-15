@@ -127,6 +127,7 @@
 		84BAD4321E542D91006EF1C8 /* IUUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4311E542D91006EF1C8 /* IUUtil.m */; };
 		84BAD4CF1E5452D9006EF1C8 /* IUBottomSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4CE1E5452D9006EF1C8 /* IUBottomSheetViewController.m */; };
 		84BAD4D21E5452F4006EF1C8 /* IUFadeModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */; };
+		84BAD4D61E545A9D006EF1C8 /* IUWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4D51E545A9D006EF1C8 /* IUWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -382,6 +383,8 @@
 		84BAD4CE1E5452D9006EF1C8 /* IUBottomSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUBottomSheetViewController.m; sourceTree = "<group>"; };
 		84BAD4D01E5452F4006EF1C8 /* IUFadeModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUFadeModalViewController.h; sourceTree = "<group>"; };
 		84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUFadeModalViewController.m; sourceTree = "<group>"; };
+		84BAD4D41E545A9D006EF1C8 /* IUWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUWebViewController.h; sourceTree = "<group>"; };
+		84BAD4D51E545A9D006EF1C8 /* IUWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUWebViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -651,6 +654,8 @@
 				84BAD4CE1E5452D9006EF1C8 /* IUBottomSheetViewController.m */,
 				84BAD4D01E5452F4006EF1C8 /* IUFadeModalViewController.h */,
 				84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */,
+				84BAD4D41E545A9D006EF1C8 /* IUWebViewController.h */,
+				84BAD4D51E545A9D006EF1C8 /* IUWebViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -991,6 +996,7 @@
 				84BAD4211E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.m in Sources */,
 				844398791E52997A00EA8989 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				844398011E51CC0000EA8989 /* IUTransitionAnimator.m in Sources */,
+				84BAD4D61E545A9D006EF1C8 /* IUWebViewController.m in Sources */,
 				8443989F1E529BCE00EA8989 /* NSObject+MJKeyValue.m in Sources */,
 				8443987C1E52997A00EA8989 /* UIProgressView+AFNetworking.m in Sources */,
 				844397FA1E51CC0000EA8989 /* UITabBarController+IUOrientation.m in Sources */,

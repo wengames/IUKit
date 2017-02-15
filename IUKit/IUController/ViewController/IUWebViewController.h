@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IUWebViewController : UIViewController
+@interface IUWebViewController : UIViewController <UIWebViewDelegate>
+
+@property (nonatomic, strong, readonly) UIView    *loadingBar;
+@property (nonatomic, strong, readonly) UIWebView *webView;
+
+- (instancetype)initWithURL:(NSString *)url;
 
 @end
