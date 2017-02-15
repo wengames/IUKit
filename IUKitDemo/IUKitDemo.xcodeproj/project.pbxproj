@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		843936981E5418F900D2B957 /* NSString+IUCharacterLength.m in Sources */ = {isa = PBXBuildFile; fileRef = 843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */; };
 		844397151E51BABF00EA8989 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397141E51BABF00EA8989 /* main.m */; };
 		844397181E51BABF00EA8989 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397171E51BABF00EA8989 /* AppDelegate.m */; };
 		8443971B1E51BABF00EA8989 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8443971A1E51BABF00EA8989 /* ViewController.m */; };
@@ -53,7 +54,6 @@
 		844398011E51CC0000EA8989 /* IUTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397E81E51CC0000EA8989 /* IUTransitionAnimator.m */; };
 		844398021E51CC0000EA8989 /* IUTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397EA1E51CC0000EA8989 /* IUTransitioningDelegate.m */; };
 		844398031E51CC0000EA8989 /* UIViewController+IUMagicTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397EC1E51CC0000EA8989 /* UIViewController+IUMagicTransition.m */; };
-		844398041E51CC0000EA8989 /* IUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397EF1E51CC0000EA8989 /* IUViewController.m */; };
 		844398051E51CC0000EA8989 /* UIViewController+IUAppear.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397F11E51CC0000EA8989 /* UIViewController+IUAppear.m */; };
 		844398061E51CC0000EA8989 /* UIViewController+IUPreviewing.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397F31E51CC0000EA8989 /* UIViewController+IUPreviewing.m */; };
 		844398071E51CC0000EA8989 /* UIViewController+IUSubviews.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397F51E51CC0000EA8989 /* UIViewController+IUSubviews.m */; };
@@ -113,9 +113,23 @@
 		844398C71E53F0D500EA8989 /* IUBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 844398C61E53F0D500EA8989 /* IUBaseModel.m */; };
 		844398CD1E53FA0500EA8989 /* TestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 844398CC1E53FA0500EA8989 /* TestModel.m */; };
 		844398D01E54003A00EA8989 /* IUBackgroundRequestPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 844398CF1E54003A00EA8989 /* IUBackgroundRequestPool.m */; };
+		84BAD4121E541FA8006EF1C8 /* UIViewController+IUModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4111E541FA8006EF1C8 /* UIViewController+IUModalTransition.m */; };
+		84BAD4151E542243006EF1C8 /* UIViewController+IUKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4141E542243006EF1C8 /* UIViewController+IUKeyboard.m */; };
+		84BAD4181E542456006EF1C8 /* UIViewController+IUContainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4171E542456006EF1C8 /* UIViewController+IUContainView.m */; };
+		84BAD41B1E5428F2006EF1C8 /* NSString+IUJsonTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD41A1E5428F2006EF1C8 /* NSString+IUJsonTransform.m */; };
+		84BAD41E1E5429C9006EF1C8 /* NSString+IUCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD41D1E5429C9006EF1C8 /* NSString+IUCrypto.m */; };
+		84BAD4211E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4201E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.m */; };
+		84BAD42C1E542D4D006EF1C8 /* UIImage+IUColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4231E542D4D006EF1C8 /* UIImage+IUColor.m */; };
+		84BAD42D1E542D4D006EF1C8 /* UIImage+IUFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4251E542D4D006EF1C8 /* UIImage+IUFilter.m */; };
+		84BAD42E1E542D4D006EF1C8 /* UIImage+IUGif.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4271E542D4D006EF1C8 /* UIImage+IUGif.m */; };
+		84BAD42F1E542D4D006EF1C8 /* UIImage+IURotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4291E542D4D006EF1C8 /* UIImage+IURotation.m */; };
+		84BAD4301E542D4D006EF1C8 /* UIImage+IUTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD42B1E542D4D006EF1C8 /* UIImage+IUTransform.m */; };
+		84BAD4321E542D91006EF1C8 /* IUUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4311E542D91006EF1C8 /* IUUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		843936961E5418F900D2B957 /* NSString+IUCharacterLength.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IUCharacterLength.h"; sourceTree = "<group>"; };
+		843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IUCharacterLength.m"; sourceTree = "<group>"; };
 		844397101E51BABF00EA8989 /* IUKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IUKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844397141E51BABF00EA8989 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		844397161E51BABF00EA8989 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -216,8 +230,6 @@
 		844397EA1E51CC0000EA8989 /* IUTransitioningDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUTransitioningDelegate.m; sourceTree = "<group>"; };
 		844397EB1E51CC0000EA8989 /* UIViewController+IUMagicTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUMagicTransition.h"; sourceTree = "<group>"; };
 		844397EC1E51CC0000EA8989 /* UIViewController+IUMagicTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IUMagicTransition.m"; sourceTree = "<group>"; };
-		844397EE1E51CC0000EA8989 /* IUViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUViewController.h; sourceTree = "<group>"; };
-		844397EF1E51CC0000EA8989 /* IUViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUViewController.m; sourceTree = "<group>"; };
 		844397F01E51CC0000EA8989 /* UIViewController+IUAppear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUAppear.h"; sourceTree = "<group>"; };
 		844397F11E51CC0000EA8989 /* UIViewController+IUAppear.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IUAppear.m"; sourceTree = "<group>"; };
 		844397F21E51CC0000EA8989 /* UIViewController+IUPreviewing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUPreviewing.h"; sourceTree = "<group>"; };
@@ -341,6 +353,29 @@
 		844398CC1E53FA0500EA8989 /* TestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestModel.m; sourceTree = "<group>"; };
 		844398CE1E54003A00EA8989 /* IUBackgroundRequestPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUBackgroundRequestPool.h; sourceTree = "<group>"; };
 		844398CF1E54003A00EA8989 /* IUBackgroundRequestPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUBackgroundRequestPool.m; sourceTree = "<group>"; };
+		84BAD4101E541FA8006EF1C8 /* UIViewController+IUModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUModalTransition.h"; sourceTree = "<group>"; };
+		84BAD4111E541FA8006EF1C8 /* UIViewController+IUModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IUModalTransition.m"; sourceTree = "<group>"; };
+		84BAD4131E542243006EF1C8 /* UIViewController+IUKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUKeyboard.h"; sourceTree = "<group>"; };
+		84BAD4141E542243006EF1C8 /* UIViewController+IUKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IUKeyboard.m"; sourceTree = "<group>"; };
+		84BAD4161E542456006EF1C8 /* UIViewController+IUContainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUContainView.h"; sourceTree = "<group>"; };
+		84BAD4171E542456006EF1C8 /* UIViewController+IUContainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IUContainView.m"; sourceTree = "<group>"; };
+		84BAD4191E5428F2006EF1C8 /* NSString+IUJsonTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IUJsonTransform.h"; sourceTree = "<group>"; };
+		84BAD41A1E5428F2006EF1C8 /* NSString+IUJsonTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IUJsonTransform.m"; sourceTree = "<group>"; };
+		84BAD41C1E5429C9006EF1C8 /* NSString+IUCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IUCrypto.h"; sourceTree = "<group>"; };
+		84BAD41D1E5429C9006EF1C8 /* NSString+IUCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IUCrypto.m"; sourceTree = "<group>"; };
+		84BAD41F1E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IUAttributedStringTransform.h"; sourceTree = "<group>"; };
+		84BAD4201E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IUAttributedStringTransform.m"; sourceTree = "<group>"; };
+		84BAD4221E542D4D006EF1C8 /* UIImage+IUColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+IUColor.h"; sourceTree = "<group>"; };
+		84BAD4231E542D4D006EF1C8 /* UIImage+IUColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+IUColor.m"; sourceTree = "<group>"; };
+		84BAD4241E542D4D006EF1C8 /* UIImage+IUFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+IUFilter.h"; sourceTree = "<group>"; };
+		84BAD4251E542D4D006EF1C8 /* UIImage+IUFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+IUFilter.m"; sourceTree = "<group>"; };
+		84BAD4261E542D4D006EF1C8 /* UIImage+IUGif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+IUGif.h"; sourceTree = "<group>"; };
+		84BAD4271E542D4D006EF1C8 /* UIImage+IUGif.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+IUGif.m"; sourceTree = "<group>"; };
+		84BAD4281E542D4D006EF1C8 /* UIImage+IURotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+IURotation.h"; sourceTree = "<group>"; };
+		84BAD4291E542D4D006EF1C8 /* UIImage+IURotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+IURotation.m"; sourceTree = "<group>"; };
+		84BAD42A1E542D4D006EF1C8 /* UIImage+IUTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+IUTransform.h"; sourceTree = "<group>"; };
+		84BAD42B1E542D4D006EF1C8 /* UIImage+IUTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+IUTransform.m"; sourceTree = "<group>"; };
+		84BAD4311E542D91006EF1C8 /* IUUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUUtil.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -516,6 +551,8 @@
 				844397C41E51CB9E00EA8989 /* UITextField+IUTextInputRestrict.m */,
 				844397C51E51CB9E00EA8989 /* UITextView+IUTextInputRestrict.h */,
 				844397C61E51CB9E00EA8989 /* UITextView+IUTextInputRestrict.m */,
+				843936961E5418F900D2B957 /* NSString+IUCharacterLength.h */,
+				843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */,
 			);
 			path = IUTextInput;
 			sourceTree = "<group>";
@@ -592,14 +629,18 @@
 		844397ED1E51CC0000EA8989 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				844397EE1E51CC0000EA8989 /* IUViewController.h */,
-				844397EF1E51CC0000EA8989 /* IUViewController.m */,
 				844397F01E51CC0000EA8989 /* UIViewController+IUAppear.h */,
 				844397F11E51CC0000EA8989 /* UIViewController+IUAppear.m */,
 				844397F21E51CC0000EA8989 /* UIViewController+IUPreviewing.h */,
 				844397F31E51CC0000EA8989 /* UIViewController+IUPreviewing.m */,
 				844397F41E51CC0000EA8989 /* UIViewController+IUSubviews.h */,
 				844397F51E51CC0000EA8989 /* UIViewController+IUSubviews.m */,
+				84BAD4131E542243006EF1C8 /* UIViewController+IUKeyboard.h */,
+				84BAD4141E542243006EF1C8 /* UIViewController+IUKeyboard.m */,
+				84BAD4101E541FA8006EF1C8 /* UIViewController+IUModalTransition.h */,
+				84BAD4111E541FA8006EF1C8 /* UIViewController+IUModalTransition.m */,
+				84BAD4161E542456006EF1C8 /* UIViewController+IUContainView.h */,
+				84BAD4171E542456006EF1C8 /* UIViewController+IUContainView.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -623,6 +664,7 @@
 				844398161E51CF2F00EA8989 /* Categories */,
 				8443982D1E51CF2F00EA8989 /* Classes */,
 				844398361E51CF2F00EA8989 /* IUUtil.h */,
+				84BAD4311E542D91006EF1C8 /* IUUtil.m */,
 			);
 			path = IUUtil;
 			sourceTree = "<group>";
@@ -638,6 +680,22 @@
 				8443981C1E51CF2F00EA8989 /* NSString+IURegex.m */,
 				8443981D1E51CF2F00EA8989 /* NSString+IUTokenizer.h */,
 				8443981E1E51CF2F00EA8989 /* NSString+IUTokenizer.m */,
+				84BAD4191E5428F2006EF1C8 /* NSString+IUJsonTransform.h */,
+				84BAD41A1E5428F2006EF1C8 /* NSString+IUJsonTransform.m */,
+				84BAD41C1E5429C9006EF1C8 /* NSString+IUCrypto.h */,
+				84BAD41D1E5429C9006EF1C8 /* NSString+IUCrypto.m */,
+				84BAD41F1E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.h */,
+				84BAD4201E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.m */,
+				84BAD4221E542D4D006EF1C8 /* UIImage+IUColor.h */,
+				84BAD4231E542D4D006EF1C8 /* UIImage+IUColor.m */,
+				84BAD4241E542D4D006EF1C8 /* UIImage+IUFilter.h */,
+				84BAD4251E542D4D006EF1C8 /* UIImage+IUFilter.m */,
+				84BAD4261E542D4D006EF1C8 /* UIImage+IUGif.h */,
+				84BAD4271E542D4D006EF1C8 /* UIImage+IUGif.m */,
+				84BAD4281E542D4D006EF1C8 /* UIImage+IURotation.h */,
+				84BAD4291E542D4D006EF1C8 /* UIImage+IURotation.m */,
+				84BAD42A1E542D4D006EF1C8 /* UIImage+IUTransform.h */,
+				84BAD42B1E542D4D006EF1C8 /* UIImage+IUTransform.m */,
 				8443981F1E51CF2F00EA8989 /* UIButton+IUColor.h */,
 				844398201E51CF2F00EA8989 /* UIButton+IUColor.m */,
 				844398211E51CF2F00EA8989 /* UIColor+IUGenerator.h */,
@@ -855,6 +913,7 @@
 				8443987B1E52997A00EA8989 /* UIImageView+AFNetworking.m in Sources */,
 				8443987D1E52997A00EA8989 /* UIRefreshControl+AFNetworking.m in Sources */,
 				844398761E52997A00EA8989 /* AFAutoPurgingImageCache.m in Sources */,
+				84BAD4181E542456006EF1C8 /* UIViewController+IUContainView.m in Sources */,
 				844398431E51CF2F00EA8989 /* IUForceTouchGestureRecognizer.m in Sources */,
 				844397F71E51CC0000EA8989 /* UINavigationController+IUFullScreenInteractivePopGestureRecognizer.m in Sources */,
 				844397AD1E51C02F00EA8989 /* UILabel+IUChain.m in Sources */,
@@ -870,6 +929,7 @@
 				844397BB1E51C02F00EA8989 /* UIViewController+IUChain.m in Sources */,
 				844397FF1E51CC0000EA8989 /* UIViewController+IUStatusBarHidden.m in Sources */,
 				844398401E51CF2F00EA8989 /* UIView+IUTouchAreaExpand.m in Sources */,
+				84BAD4121E541FA8006EF1C8 /* UIViewController+IUModalTransition.m in Sources */,
 				8443987A1E52997A00EA8989 /* UIButton+AFNetworking.m in Sources */,
 				844397AB1E51C02F00EA8989 /* UIGestureRecognizer+IUChain.m in Sources */,
 				844398C11E53E83900EA8989 /* NSNull+IUProtect.m in Sources */,
@@ -885,6 +945,7 @@
 				844397B31E51C02F00EA8989 /* UISegmentedControl+IUChain.m in Sources */,
 				844398B01E52F40200EA8989 /* IURequestUploadFile.m in Sources */,
 				844398A01E529BCE00EA8989 /* NSObject+MJProperty.m in Sources */,
+				84BAD41B1E5428F2006EF1C8 /* NSString+IUJsonTransform.m in Sources */,
 				844398031E51CC0000EA8989 /* UIViewController+IUMagicTransition.m in Sources */,
 				844397AC1E51C02F00EA8989 /* UIImageView+IUChain.m in Sources */,
 				8443989E1E529BCE00EA8989 /* NSObject+MJCoding.m in Sources */,
@@ -902,18 +963,21 @@
 				844398C71E53F0D500EA8989 /* IUBaseModel.m in Sources */,
 				8443983F1E51CF2F00EA8989 /* UIView+IUEmpty.m in Sources */,
 				844398391E51CF2F00EA8989 /* NSString+IURegex.m in Sources */,
+				84BAD4301E542D4D006EF1C8 /* UIImage+IUTransform.m in Sources */,
 				844398811E529B7400EA8989 /* IURequestorRegistrar.m in Sources */,
 				8443989C1E529BCE00EA8989 /* MJPropertyType.m in Sources */,
 				844397CA1E51CB9E00EA8989 /* UITextView+IUTextInputRestrict.m in Sources */,
-				844398041E51CC0000EA8989 /* IUViewController.m in Sources */,
 				8443983C1E51CF2F00EA8989 /* UIColor+IUGenerator.m in Sources */,
 				844398981E529BCE00EA8989 /* MJExtensionConst.m in Sources */,
 				844397A81E51C02F00EA8989 /* UIButton+IUChain.m in Sources */,
 				844398C41E53E84700EA8989 /* NSURL+IUProtect.m in Sources */,
 				8443983A1E51CF2F00EA8989 /* NSString+IUTokenizer.m in Sources */,
+				843936981E5418F900D2B957 /* NSString+IUCharacterLength.m in Sources */,
+				84BAD4151E542243006EF1C8 /* UIViewController+IUKeyboard.m in Sources */,
 				844397B61E51C02F00EA8989 /* UITabBarController+IUChain.m in Sources */,
 				844397FD1E51CC0000EA8989 /* UITabBarController+IUStatusBar.m in Sources */,
 				8443989B1E529BCE00EA8989 /* MJPropertyKey.m in Sources */,
+				84BAD4211E542A7A006EF1C8 /* NSString+IUAttributedStringTransform.m in Sources */,
 				844398791E52997A00EA8989 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				844398011E51CC0000EA8989 /* IUTransitionAnimator.m in Sources */,
 				8443989F1E529BCE00EA8989 /* NSObject+MJKeyValue.m in Sources */,
@@ -936,23 +1000,29 @@
 				844398721E52997A00EA8989 /* AFURLResponseSerialization.m in Sources */,
 				844398771E52997A00EA8989 /* AFImageDownloader.m in Sources */,
 				844398731E52997A00EA8989 /* AFURLSessionManager.m in Sources */,
+				84BAD42E1E542D4D006EF1C8 /* UIImage+IUGif.m in Sources */,
 				844397351E51BD0800EA8989 /* NSObject+IUMethodSwizzling.m in Sources */,
 				844397C91E51CB9E00EA8989 /* UITextField+IUTextInputRestrict.m in Sources */,
 				844397BC1E51C02F00EA8989 /* UIWindow+IUChain.m in Sources */,
 				844397151E51BABF00EA8989 /* main.m in Sources */,
+				84BAD41E1E5429C9006EF1C8 /* NSString+IUCrypto.m in Sources */,
 				844397B81E51C02F00EA8989 /* UITextField+IUChain.m in Sources */,
 				844398021E51CC0000EA8989 /* IUTransitioningDelegate.m in Sources */,
 				844398701E52997A00EA8989 /* AFSecurityPolicy.m in Sources */,
 				844398451E51CF2F00EA8989 /* IUTabPageViewController.m in Sources */,
 				844397AF1E51C02F00EA8989 /* UIPageControl+IUChain.m in Sources */,
+				84BAD42C1E542D4D006EF1C8 /* UIImage+IUColor.m in Sources */,
 				844397F91E51CC0000EA8989 /* UINavigationController+IUOrientation.m in Sources */,
 				844397A71E51C02F00EA8989 /* NSObject+IUChain.m in Sources */,
 				844398141E51CE8400EA8989 /* UIViewController+IURouter.m in Sources */,
+				84BAD42F1E542D4D006EF1C8 /* UIImage+IURotation.m in Sources */,
 				844398711E52997A00EA8989 /* AFURLRequestSerialization.m in Sources */,
 				844398A11E529BCE00EA8989 /* NSString+MJExtension.m in Sources */,
 				844397FC1E51CC0000EA8989 /* UINavigationController+IUStatusBar.m in Sources */,
 				8443983E1E51CF2F00EA8989 /* UITableView+IUDataBinder.m in Sources */,
 				844398781E52997A00EA8989 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				84BAD42D1E542D4D006EF1C8 /* UIImage+IUFilter.m in Sources */,
+				84BAD4321E542D91006EF1C8 /* IUUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

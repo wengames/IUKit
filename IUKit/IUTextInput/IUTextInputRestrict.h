@@ -11,6 +11,7 @@
 @interface IUTextInputRestrict : NSObject
 
 @property (nonatomic, assign, readonly) NSUInteger maxTextLength; // the maxTextLength of input view, default is NSUIntegerMax
+@property (nonatomic, assign, readonly) NSUInteger maxCharacterLength; // the maxTextLength of input view, default is NSUIntegerMax
 
 + (instancetype)textInputRestrict;
 

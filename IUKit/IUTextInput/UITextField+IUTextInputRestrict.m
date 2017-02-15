@@ -12,10 +12,12 @@
 
 static char TAG_TEXT_FIELD_TEXT_INPUT_RESTRICT;
 static char TAG_TEXT_FIELD_MAX_TEXT_LENGTH;
+static char TAG_TEXT_FIELD_MAX_CHARACTER_LENGTH;
 
 @interface IUTextInputRestrict ()
 
 @property (nonatomic, assign) NSUInteger maxTextLength;
+@property (nonatomic, assign) NSUInteger maxCharacterLength;
 - (void)_textDidChange:(id<UITextInput>)textInput;
 
 @end
@@ -51,6 +53,7 @@ static char TAG_TEXT_FIELD_MAX_TEXT_LENGTH;
     }
     
     textInputRestrict.maxTextLength = self.maxTextLength;
+    textInputRestrict.maxCharacterLength = self.maxCharacterLength;
     
     [self addTarget:textInputRestrict action:@selector(_textDidChange:) forControlEvents:UIControlEventAllEditingEvents];
 }
@@ -60,6 +63,7 @@ static char TAG_TEXT_FIELD_MAX_TEXT_LENGTH;
     if (textInputRestrict == nil) {
         textInputRestrict = [[IUTextInputRestrict alloc] init];
         textInputRestrict.maxTextLength = self.maxTextLength;
+        textInputRestrict.maxCharacterLength = self.maxCharacterLength;
         objc_setAssociatedObject(self, &TAG_TEXT_FIELD_TEXT_INPUT_RESTRICT, textInputRestrict, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self addTarget:textInputRestrict action:@selector(_textDidChange:) forControlEvents:UIControlEventAllEditingEvents];
     }
@@ -74,10 +78,18 @@ static char TAG_TEXT_FIELD_MAX_TEXT_LENGTH;
 
 - (NSUInteger)maxTextLength {
     NSNumber *number = objc_getAssociatedObject(self, &TAG_TEXT_FIELD_MAX_TEXT_LENGTH);
-    if (number) {
-        return [number unsignedIntegerValue];
-    }
-    return NSUIntegerMax;
+    return number ? [number unsignedIntegerValue] : NSUIntegerMax;
+}
+
+- (void)setMaxCharacterLength:(NSUInteger)maxCharacterLength {
+    objc_setAssociatedObject(self, &TAG_TEXT_FIELD_MAX_CHARACTER_LENGTH, @(maxCharacterLength), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.textInputRestrict.maxCharacterLength = maxCharacterLength;
+    [self.textInputRestrict _textDidChange:self];
+}
+
+- (NSUInteger)maxCharacterLength {
+    NSNumber *number = objc_getAssociatedObject(self, &TAG_TEXT_FIELD_MAX_CHARACTER_LENGTH);
+    return number ? [number unsignedIntegerValue] : NSUIntegerMax;
 }
 
 - (NSString *)phone {

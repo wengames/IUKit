@@ -10,6 +10,7 @@
 
 #ifdef __OBJC__
 
+#import "NSString+IUCharacterLength.h"
 #import "IUTextInputRestrict.h"
 #import "UITextField+IUTextInputRestrict.h"
 #import "UITextView+IUTextInputRestrict.h"

@@ -13,6 +13,7 @@
 @interface IUTextInputRestrict ()
 
 @property (nonatomic, assign) NSUInteger maxTextLength;
+@property (nonatomic, assign) NSUInteger maxCharacterLength;
 - (void)_textDidChange:(id<UITextInput>)textInput;
 
 @end
@@ -27,6 +28,7 @@
 
 static char TAG_TEXT_VIEW_TEXT_INPUT_RESTRICT;
 static char TAG_TEXT_VIEW_MAX_TEXT_LENGTH;
+static char TAG_TEXT_VIEW_MAX_CHARACTER_LENGTH;
 static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
 
 @implementation UITextView (IUTextInputRestrict)
@@ -105,7 +107,8 @@ static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
         [(IUTextInputRestrictIdentityCard *)textInputRestrict setInputView:self];
     }
     textInputRestrict.maxTextLength = self.maxTextLength;
-    
+    textInputRestrict.maxCharacterLength = self.maxCharacterLength;
+
     [[NSNotificationCenter defaultCenter] addObserver:textInputRestrict selector:@selector(textViewDidChange:) name:UITextViewTextDidChangeNotification object:self];
 }
 
@@ -114,6 +117,7 @@ static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
     if (textInputRestrict == nil) {
         textInputRestrict = [[IUTextInputRestrict alloc] init];
         textInputRestrict.maxTextLength = self.maxTextLength;
+        textInputRestrict.maxCharacterLength = self.maxCharacterLength;
         objc_setAssociatedObject(self, &TAG_TEXT_VIEW_TEXT_INPUT_RESTRICT, textInputRestrict, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return textInputRestrict;
@@ -127,10 +131,18 @@ static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
 
 - (NSUInteger)maxTextLength {
     NSNumber *number = objc_getAssociatedObject(self, &TAG_TEXT_VIEW_MAX_TEXT_LENGTH);
-    if (number) {
-        return [number unsignedIntegerValue];
-    }
-    return NSUIntegerMax;
+    return number ? [number unsignedIntegerValue] : NSUIntegerMax;
+}
+
+- (void)setMaxCharacterLength:(NSUInteger)maxCharacterLength {
+    objc_setAssociatedObject(self, &TAG_TEXT_VIEW_MAX_CHARACTER_LENGTH, @(maxCharacterLength), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.textInputRestrict.maxCharacterLength = maxCharacterLength;
+    [self.textInputRestrict _textDidChange:self];
+}
+
+- (NSUInteger)maxCharacterLength {
+    NSNumber *number = objc_getAssociatedObject(self, &TAG_TEXT_VIEW_MAX_CHARACTER_LENGTH);
+    return number ? [number unsignedIntegerValue] : NSUIntegerMax;
 }
 
 - (NSString *)phone {

@@ -31,6 +31,8 @@
                       @"platform" : @0
                       };
     NSLog(@"%@", [NSURL URLWithString:@"http://多舒服的方式地方?多舒服就离开=都是发挥空间"].absoluteString);
+
+    [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
 }
 
 @end

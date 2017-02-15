@@ -12,7 +12,8 @@
 @interface UITextField (IUTextInputRestrict)
 
 @property (nonatomic, strong) IUTextInputRestrict *textInputRestrict;
-@property (nonatomic, assign) NSUInteger           maxTextLength;     // default is NSUIntegerMax
+@property (nonatomic, assign) NSUInteger maxTextLength;      // default is NSUIntegerMax
+@property (nonatomic, assign) NSUInteger maxCharacterLength; // default is NSUIntegerMax
 
 @property (nonatomic, readonly) NSString *phone; // get phone while textInputRestrict is set to IUTextInputRestrictPhone
 
@@ -23,5 +24,6 @@
 
 @property (nonatomic, readonly) UITextField *(^setTextInputRestrict)(IUTextInputRestrict *);
 @property (nonatomic, readonly) UITextField *(^setMaxTextLength)(NSUInteger);
+@property (nonatomic, readonly) UITextField *(^setMaxCharacterLength)(NSUInteger);
 
 @end

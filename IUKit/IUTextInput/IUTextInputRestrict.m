@@ -12,6 +12,7 @@
 @interface IUTextInputRestrict ()
 
 @property (nonatomic, assign) NSUInteger maxTextLength; // restricts text length, default is NSUIntegerMax
+@property (nonatomic, assign) NSUInteger maxCharacterLength; // restricts character length, default is NSUIntegerMax
 
 @end
 
@@ -77,8 +78,13 @@
     NSInteger indexAfter = [self handleText:text cursorIndex:cursorIndex];
     
     // restrict max text length
-    if ((*text).length > self.maxTextLength) *text = [*text substringToIndex:self.maxTextLength];
+    NSString *string = *text;
+    if (string.length > self.maxTextLength) string = [string substringToIndex:self.maxTextLength];
+    while (string.characterLength > self.maxCharacterLength && string.length) {
+        string = [string substringToIndex:[string length] - 1];
+    }
     
+    *text = string;
     // fix index below text length
     indexAfter = MIN(indexAfter, (*text).length);
     

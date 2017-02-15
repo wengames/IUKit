@@ -1,14 +1,14 @@
 //
-//  IUViewController.h
-//  IUController
+//  UIViewController+IUKeyboard.h
+//  IUKitDemo
 //
-//  Created by admin on 2017/1/24.
+//  Created by admin on 2017/2/15.
 //  Copyright © 2017年 刘海文. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface IUViewController : UIViewController
+@interface UIViewController (IUKeyboard)
 
 @property (nonatomic, strong, readonly) UITapGestureRecognizer *hideKeyboardTapGestureRecognizer;
 @property (nonatomic, assign, readonly) CGFloat           keyboardHeight;               // current keyboard height

@@ -9,6 +9,7 @@
 #import "UIViewController+IUSubviews.h"
 #import <objc/runtime.h>
 #import "IUMethodSwizzling.h"
+#import "UIViewController+IUKeyboard.h"
 
 static char TAG_VIEW_CONTROLLER_SCROLL_VIEW;
 static char TAG_VIEW_CONTROLLER_TABLE_VIEW_STYLE;
@@ -24,11 +25,18 @@ static char TAG_VIEW_CONTROLLER_COLLECTION_VIEW;
 
 + (void)load {
     [self swizzleInstanceSelector:@selector(loadView) toSelector:@selector(iuSubviews_UIViewController_loadView)];
+    [self swizzleInstanceSelector:@selector(viewDidLoad) toSelector:@selector(iuSubviews_UIViewController_viewDidLoad)];
 }
 
 - (void)iuSubviews_UIViewController_loadView {
     [self iuSubviews_UIViewController_loadView];
     self.view.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)iuSubviews_UIViewController_viewDidLoad {
+    [self iuSubviews_UIViewController_viewDidLoad];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 #pragma mark scrollView
@@ -43,6 +51,7 @@ static char TAG_VIEW_CONTROLLER_COLLECTION_VIEW;
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         scrollView.frame = self.view.bounds;
         [self.view addSubview:scrollView];
+        self.keyboardFittingScrollView = scrollView;
     }
     return scrollView;
 }
@@ -75,6 +84,7 @@ static char TAG_VIEW_CONTROLLER_COLLECTION_VIEW;
         tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         tableView.frame = self.view.bounds;
         [self.view addSubview:tableView];
+        self.keyboardFittingScrollView = tableView;
     }
     return tableView;
 }
@@ -113,6 +123,7 @@ static char TAG_VIEW_CONTROLLER_COLLECTION_VIEW;
         collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         collectionView.frame = self.view.bounds;
         [self.view addSubview:collectionView];
+        self.keyboardFittingScrollView = collectionView;
     }
     return collectionView;
 }
