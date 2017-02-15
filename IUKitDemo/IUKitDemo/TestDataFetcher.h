@@ -8,6 +8,7 @@
 
 #import "IUDataFetcher.h"
 #import "TestModel.h"
+#import "IUKit.h"
 
 @interface TestDataFetcher <T : TestModel *> : IUDataFetcher
 

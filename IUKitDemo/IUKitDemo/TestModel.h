@@ -7,6 +7,7 @@
 //
 
 #import "IUBaseModel.h"
+#import "IUKit.h"
 
 @interface TestModel : IUBaseModel
 

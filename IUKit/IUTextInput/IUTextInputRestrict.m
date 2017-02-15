@@ -8,6 +8,7 @@
 
 #import "IUTextInputRestrict.h"
 #import <UIKit/UIKit.h>
+#import "NSString+IUCharacterLength.h"
 
 @interface IUTextInputRestrict ()
 

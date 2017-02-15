@@ -7,6 +7,7 @@
 //
 
 #import "IUDataFetcher.h"
+#import "IURequestorRegistrar.h"
 
 // Declare private methods of IURequest
 @interface IURequest ()

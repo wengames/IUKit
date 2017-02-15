@@ -9,6 +9,5 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
-#import "IUKit.h"
 
 #endif /* PrefixHeader_pch */
