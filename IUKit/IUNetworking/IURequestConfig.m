@@ -21,43 +21,7 @@
 }
 
 + (instancetype)config {
-    IURequestConfig *config = [[self alloc] init];
-    IURequestConfig *globalConfig = [self globalConfig];
-    
-    config.responseClass    = globalConfig.responseClass;
-    
-    config.fakeRequest      = globalConfig.fakeRequest;
-    config.fakeRequestDelay = globalConfig.fakeRequestDelay;
-
-    config.enableRequestLog = globalConfig.enableRequestLog;
-    
-    config.timeoutInterval  = globalConfig.timeoutInterval;
-    
-    config.certificates             = globalConfig.certificates;
-    config.allowInvalidCertificates = globalConfig.allowInvalidCertificates;
-    config.validatesDomainName      = globalConfig.validatesDomainName;
-    
-    config.root             = globalConfig.root;
-    config.api              = globalConfig.api;
-    config.url              = globalConfig.url;
-    
-    config.headers          = globalConfig.headers;
-    config.method           = globalConfig.method;
-    
-    config.parameters       = globalConfig.parameters;
-    config.files            = globalConfig.files;
-    
-    config.uploadProgress   = globalConfig.uploadProgress;
-    config.downloadProgress = globalConfig.downloadProgress;
-    
-    config.globalSuccess    = globalConfig.globalSuccess;
-    config.globalFailure    = globalConfig.globalFailure;
-    
-    config.success          = globalConfig.success;
-    config.failure          = globalConfig.failure;
-    config.completion       = globalConfig.completion;
-    
-    return config;
+    return [[self globalConfig] deepCopy];
 }
 
 - (instancetype)init {
@@ -70,19 +34,27 @@
     return self;
 }
 
-- (NSString *)methodString {
-    switch (self.method) {
-        case IUNetworkingRequestMethod_GET:
+- (IUNetworkingRequestMethodName)methodName {
+    return self.method >> 2;
+}
+
+- (IUNetworkingRequestSerializerType)serializerType {
+    return self.method & 3;
+}
+
+- (NSString *)methodNameString {
+    switch (self.methodName) {
+        case IUNetworkingRequestMethodName_GET:
             return @"GET";
-        case IUNetworkingRequestMethod_POST:
+        case IUNetworkingRequestMethodName_POST:
             return @"POST";
-        case IUNetworkingRequestMethod_DELETE:
+        case IUNetworkingRequestMethodName_DELETE:
             return @"DELETE";
-        case IUNetworkingRequestMethod_PUT:
+        case IUNetworkingRequestMethodName_PUT:
             return @"PUT";
-        case IUNetworkingRequestMethod_HEAD:
+        case IUNetworkingRequestMethodName_HEAD:
             return @"HEAD";
-        case IUNetworkingRequestMethod_FORM_DATA:
+        case IUNetworkingRequestMethodName_FORM_DATA:
             return @"POST";
     }
     return nil;
@@ -109,14 +81,43 @@
     return url;
 }
 
-- (void)setMethodPostURL {
-    self.method = IUNetworkingRequestMethod_POST;
-    self.serializerType = IUNetworkingRequestSerializerType_URL;
-}
-
-- (void)setMethodPostJSON {
-    self.method = IUNetworkingRequestMethod_POST;
-    self.serializerType = IUNetworkingRequestSerializerType_JSON;
+- (instancetype)deepCopy {
+    IURequestConfig *config = [[self.class alloc] init];
+    
+    config.responseClass    = self.responseClass;
+    
+    config.fakeRequest      = self.fakeRequest;
+    config.fakeRequestDelay = self.fakeRequestDelay;
+    
+    config.enableRequestLog = self.enableRequestLog;
+    
+    config.timeoutInterval  = self.timeoutInterval;
+    
+    config.certificates             = self.certificates;
+    config.allowInvalidCertificates = self.allowInvalidCertificates;
+    config.validatesDomainName      = self.validatesDomainName;
+    
+    config.root             = self.root;
+    config.api              = self.api;
+    config.url              = self.url;
+    
+    config.headers          = self.headers;
+    config.method           = self.method;
+    
+    config.parameters       = self.parameters;
+    config.files            = self.files;
+    
+    config.uploadProgress   = self.uploadProgress;
+    config.downloadProgress = self.downloadProgress;
+    
+    config.globalSuccess    = self.globalSuccess;
+    config.globalFailure    = self.globalFailure;
+    
+    config.success          = self.success;
+    config.failure          = self.failure;
+    config.completion       = self.completion;
+    
+    return config;
 }
 
 @end

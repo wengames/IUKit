@@ -10,31 +10,50 @@
 #import "IURequestUploadFile.h"
 #import "IUBaseModel.h"
 
-typedef enum {
-    IUNetworkingRequestMethod_GET = 0,  // GET
-    IUNetworkingRequestMethod_POST,     // POST
-    IUNetworkingRequestMethod_DELETE,   // DELETE
-    IUNetworkingRequestMethod_PUT,      // PUT
-    IUNetworkingRequestMethod_HEAD,     // HEAD
-    IUNetworkingRequestMethod_FORM_DATA // form-data
-} IUNetworkingRequestMethod;
+@class IURequestResult;
 
 typedef enum {
     IUNetworkingRequestSerializerType_URL   = 0, // application/x-www-form-urlencoded
-    IUNetworkingRequestSerializerType_JSON       // application/json
+    IUNetworkingRequestSerializerType_JSON  = 1  // application/json
 } IUNetworkingRequestSerializerType;
+
+typedef enum {
+    IUNetworkingRequestMethodName_GET       = 0 << 2, // GET
+    IUNetworkingRequestMethodName_POST      = 1 << 2, // POST
+    IUNetworkingRequestMethodName_DELETE    = 2 << 2, // DELETE
+    IUNetworkingRequestMethodName_PUT       = 3 << 2, // PUT
+    IUNetworkingRequestMethodName_HEAD      = 4 << 2, // HEAD
+    IUNetworkingRequestMethodName_FORM_DATA = 5 << 2  // form-data
+} IUNetworkingRequestMethodName;
+
+typedef enum {
+    /* normal */
+    IUNetworkingRequestMethod_GET           = IUNetworkingRequestMethodName_GET     | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_POST          = IUNetworkingRequestMethodName_POST    | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_DELETE        = IUNetworkingRequestMethodName_DELETE  | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_PUT           = IUNetworkingRequestMethodName_PUT     | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_HEAD          = IUNetworkingRequestMethodName_HEAD    | IUNetworkingRequestSerializerType_JSON,
+    
+    /* form-data */
+    IUNetworkingRequestMethod_FORM_DATA     = IUNetworkingRequestMethodName_FORM_DATA | IUNetworkingRequestSerializerType_JSON,
+    
+    /* other */
+    IUNetworkingRequestMethod_POST_URL      = IUNetworkingRequestMethodName_POST    | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_DELETE_URL    = IUNetworkingRequestMethodName_DELETE  | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_PUT_URL       = IUNetworkingRequestMethodName_PUT     | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_HEAD_URL      = IUNetworkingRequestMethodName_HEAD    | IUNetworkingRequestSerializerType_URL,
+} IUNetworkingRequestMethod;
 
 typedef void(^IUNetworkingProgress)(NSProgress *progress);
 
-typedef BOOL(^IUNetworkingGlobalFailure)(NSURLSessionDataTask *task, NSError *error);     // return NO to stop call failure block
-typedef void(^IUNetworkingFailure)(NSURLSessionDataTask *task, NSError *error);
+typedef BOOL(^IUNetworkingGlobalSuccess)(IURequestResult *);  // return NO to stop call success block
+typedef BOOL(^IUNetworkingGlobalFailure)(IURequestResult *);     // return NO to stop call failure block
 
+typedef void(^IUNetworkingSuccess)(IURequestResult *);
+typedef void(^IUNetworkingFailure)(IURequestResult *);
 typedef void(^IUNetworkingCompletion)(void);
 
-@interface IURequestConfig <T : IUBaseModel *> : NSObject
-
-typedef BOOL(^IUNetworkingGlobalSuccess)(NSURLSessionDataTask *task, id responseObject, T responseModel);  // return NO to stop call success block
-typedef void(^IUNetworkingSuccess)(NSURLSessionDataTask *task, id responseObject, T responseModel);
+@interface IURequestConfig : NSObject
 
 // enabled by IUDataFetcher
 @property (nonatomic, strong) Class responseClass;
@@ -54,33 +73,41 @@ typedef void(^IUNetworkingSuccess)(NSURLSessionDataTask *task, id responseObject
 
 // request with root + api, if url is nil, or use url
 @property (nonatomic, strong) NSString *root;
-@property (nonatomic, strong) NSString *api;
-@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *api; // enable to set like ":id" to get "id" in parameters
+@property (nonatomic, strong) NSString *url; // enable to set like ":id" to get "id" in parameters
 
 @property (nonatomic, strong) NSDictionary *headers; // default is @{}
 @property (nonatomic, assign) IUNetworkingRequestMethod method; // default is GET
-@property (nonatomic, assign) IUNetworkingRequestSerializerType serializerType; // default is application/x-www-form-urlencoded
 
 @property (nonatomic, strong) id parameters;
 @property (nonatomic, strong) NSArray <IURequestUploadFile *> *files;
 
-@property (nonatomic, strong) IUNetworkingProgress   uploadProgress;
-@property (nonatomic, strong) IUNetworkingProgress   downloadProgress;
+@property (nonatomic, strong) IUNetworkingProgress uploadProgress;
+@property (nonatomic, strong) IUNetworkingProgress downloadProgress;
 
 @property (nonatomic, strong) IUNetworkingGlobalSuccess globalSuccess; // call before success
 @property (nonatomic, strong) IUNetworkingGlobalFailure globalFailure; // call before failure
+
+- (void)setGlobalSuccess:(IUNetworkingGlobalSuccess)globalSuccess;
+- (void)setGlobalFailure:(IUNetworkingGlobalFailure)globalFailure;
 
 @property (nonatomic, strong) IUNetworkingSuccess    success;
 @property (nonatomic, strong) IUNetworkingFailure    failure;
 @property (nonatomic, strong) IUNetworkingCompletion completion;
 
-+ (instancetype)globalConfig; // shared instance
-+ (instancetype)config;       // config setup with global config as default
+- (void)setSuccess:(IUNetworkingSuccess)success;
+- (void)setFailure:(IUNetworkingFailure)failure;
+- (void)setCompletion:(IUNetworkingCompletion)completion;
 
-- (void)setMethodPostURL;  // method POST and type URL
-- (void)setMethodPostJSON; // method POST and type JSON
++ (instancetype)globalConfig; // shared instance, setup global config
++ (instancetype)config;       // setup with global config as default
 
-- (NSString *)methodString;
+@property (nonatomic, readonly) IUNetworkingRequestMethodName     methodName;     // convert from method
+@property (nonatomic, readonly) IUNetworkingRequestSerializerType serializerType; // convert from method
+
+- (NSString *)methodNameString;
 - (NSString *)absoluteUrl;
+
+- (instancetype)deepCopy;
 
 @end

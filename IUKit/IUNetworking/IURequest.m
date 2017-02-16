@@ -10,7 +10,6 @@
 #import "AFNetworking.h"
 #import "MJExtension.h"
 #import "IURequestorRegistrar.h"
-#import "IUBackgroundRequestPool.h"
 
 @interface NSObject (IUNetworkRequestingCount)
 
@@ -22,19 +21,22 @@
 
 @property (nonatomic, strong) NSURLSessionDataTask *task;
 @property (nonatomic, strong) NSArray <IUNetworkWeakRequestor> *requestors;
-@property (nonatomic, strong) AFNetworkReachabilityManager *reachabilityManager;
+@property (nonatomic, strong) IURequestResult *result;
 
 @end
 
 @implementation IURequest
 
 - (void)setTask:(NSURLSessionDataTask *)task {
-    if (_task) [_task cancel];
+    if (_task) {
+        [self cancel];
+    }
     _task = task;
 }
 
 - (void)cancel {
     [self.task cancel];
+    _task = nil;
 }
 
 - (void)dealloc {
@@ -48,21 +50,6 @@
     return self;
 }
 
-- (id)convertModelFromData:(id)data {
-    return [self.config.responseClass mj_objectWithKeyValues:data];
-}
-
-- (id)convertDataFromModel:(id)model {
-    return [model mj_keyValues];
-}
-
-- (AFNetworkReachabilityManager *)reachabilityManager {
-    if (_reachabilityManager == nil) {
-        _reachabilityManager = [AFNetworkReachabilityManager manager];
-    }
-    return _reachabilityManager;
-}
-
 + (IURequestConfig *)defaultRequestConfig {
     return [IURequestConfig config];
 }
@@ -70,7 +57,6 @@
 + (instancetype)generateRequest:(IUNetworkingConfiguration)configuration {
     IURequest *request = [[IURequest alloc] init];
     configuration(request.config);
-    if (request.config.method == IUNetworkingRequestMethod_GET) request.config.serializerType = IUNetworkingRequestSerializerType_URL;
     return request;
 }
 
@@ -81,19 +67,10 @@
 }
 
 // fast api
-+ (instancetype)post_url:(NSString *)api parameters:(id)parameters success:(IUNetworkingSuccess)success {
++ (instancetype)post:(NSString *)api parameters:(id)parameters success:(IUNetworkingSuccess)success {
     return [self request:^(IURequestConfig *config) {
         config.api = api;
-        [config setMethodPostURL];
-        config.parameters = parameters;
-        config.success = success;
-    }];
-}
-
-+ (instancetype)post_json:(NSString *)api parameters:(id)parameters success:(IUNetworkingSuccess)success {
-    return [self request:^(IURequestConfig *config) {
-        config.api = api;
-        [config setMethodPostJSON];
+        config.method = IUNetworkingRequestMethod_POST;
         config.parameters = parameters;
         config.success = success;
     }];
@@ -121,7 +98,7 @@
     return [self upload:api parameters:nil files:files success:success];
 }
 
-#define NSLog(FORMAT, ...) printf("%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#define IUNLog(FORMAT, ...) printf("\n========\n%s\n========\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 - (void)start {
     if ([[IURequestorRegistrar sharedInstance].requestors count]) {
         self.requestors = [IURequestorRegistrar sharedInstance].requestors;
@@ -130,29 +107,10 @@
     
     /* requestors */
     NSArray <IUNetworkWeakRequestor> *requestors = self.requestors;
-    IURequestConfig *config = self.config;
-    
-    if ([AFNetworkReachabilityManager sharedManager].networkReachabilityStatus == AFNetworkReachabilityStatusNotReachable) {
+    IURequestConfig *config = [self.config deepCopy];
         
-        [requestors enumerateObjectsUsingBlock:^(IUNetworkWeakRequestor  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSObject *requestor = (NSObject *)obj();
-            if ([requestor respondsToSelector:@selector(requestDidDelayByNetworkNotReachable:)]) {
-                [requestor requestDidDelayByNetworkNotReachable:self];
-            }
-        }];
-
-        __weak typeof(self) weakSelf = self;
-        [self.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            if (status != AFNetworkReachabilityStatusNotReachable) {
-                [weakSelf.reachabilityManager setReachabilityStatusChangeBlock:nil];
-                [weakSelf start];
-            }
-        }];
-        return;
-    }
-    
     /* request serializer */
-    AFHTTPRequestSerializer *requestSerializer = config.serializerType == IUNetworkingRequestSerializerType_URL ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer];
+    AFHTTPRequestSerializer *requestSerializer = (config.serializerType == IUNetworkingRequestSerializerType_URL ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer]);
     // set timeout interval
     requestSerializer.timeoutInterval = config.timeoutInterval;
     // set headers
@@ -182,30 +140,32 @@
     void(^comletion)(void) = ^{
         [self _endRequestors:requestors];
         self.task = nil;
-        [[IUBackgroundRequestPool pool].requests removeObject:self]; // release
     };
     // success
     void(^success)(NSURLSessionDataTask *, id) = ^(NSURLSessionDataTask *task, id responseObject) {
+        IURequestResult *result = [IURequestResult resultWithConfig:config task:task responseObject:responseObject error:nil];
         if (config.enableRequestLog) {
-            NSLog(@"\n✅request success\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request response : %@", [config absoluteUrl], [config methodString], [config parameters], responseObject);
+            IUNLog(@"✅request success\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request response : %@", [config absoluteUrl], [config methodNameString], [config parameters], result.responseObject);
         }
         [IURequestorRegistrar sharedInstance].requestors = self.requestors;
-        id model = [self convertModelFromData:responseObject];
-        if ((!config.globalSuccess || config.globalSuccess(task, responseObject, model)) && config.success) config.success(task, responseObject, model);
+        if ((!config.globalSuccess || config.globalSuccess(result)) && config.success) config.success(result);
         [[IURequestorRegistrar sharedInstance] clear];
         comletion();
+        self.result = result;
     };
     // failure
     void(^failure)(NSURLSessionDataTask *, NSError *) = ^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        IURequestResult *result = [IURequestResult resultWithConfig:config task:task responseObject:nil error:error];
         if (task.state == NSURLSessionTaskStateCanceling) {
             if (config.enableRequestLog) {
-                NSLog(@"\n❎request cancelled\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n", [config absoluteUrl], [config methodString], [config parameters]);
+                IUNLog(@"❎request cancelled\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@", [config absoluteUrl], [config methodNameString], [config parameters]);
             }
         } else {
             if (config.enableRequestLog) {
-                NSLog(@"\n⚠️request failure\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request error : %@", [config absoluteUrl], [config methodString], [config parameters], error);
+                IUNLog(@"⚠️request failure\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request error : %@", [config absoluteUrl], [config methodNameString], [config parameters], error);
             }
-            if ((!config.globalFailure || config.globalFailure(task, error)) && config.failure) config.failure(task, error);
+            
+            if ((!config.globalFailure || config.globalFailure(result)) && config.failure) config.failure(result);
             [requestors enumerateObjectsUsingBlock:^(IUNetworkWeakRequestor  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 id<IUNetworkingRequestDelegate> weakRequestor = obj();
                 if ([weakRequestor respondsToSelector:@selector(request:didFailWithError:)]) {
@@ -214,17 +174,23 @@
             }];
         }
         comletion();
+        self.result = result;
     };
     
     /* begin request */
     [self _startRequestors:requestors];
-    if (!self.autoCancel) [[IUBackgroundRequestPool pool].requests addObject:self]; // retain
     if (config.enableRequestLog) {
-        NSLog(@"\n🕑request start\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@", [config absoluteUrl], [config methodString], [config parameters]);
+        IUNLog(@"🕑request start\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@", [config absoluteUrl], [config methodNameString], [config parameters]);
     }
     
-    switch (config.method) {
-        case IUNetworkingRequestMethod_GET:
+    if (config.fakeRequest) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(config.fakeRequestDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            success(nil, nil);
+        });
+    }
+    
+    switch (config.methodName) {
+        case IUNetworkingRequestMethodName_GET:
         {
             self.task = [sessionManager GET:[config absoluteUrl]
                                  parameters:[config parameters]
@@ -232,7 +198,7 @@
                                     success:success
                                     failure:failure];
         }   break;
-        case IUNetworkingRequestMethod_POST:
+        case IUNetworkingRequestMethodName_POST:
         {
             self.task = [sessionManager POST:[config absoluteUrl]
                                   parameters:[config parameters]
@@ -240,21 +206,21 @@
                                      success:success
                                      failure:failure];
         }   break;
-        case IUNetworkingRequestMethod_PUT:
+        case IUNetworkingRequestMethodName_PUT:
         {
             self.task = [sessionManager PUT:[config absoluteUrl]
                                  parameters:[config parameters]
                                     success:success
                                     failure:failure];
         }   break;
-        case IUNetworkingRequestMethod_DELETE:
+        case IUNetworkingRequestMethodName_DELETE:
         {
             self.task = [sessionManager DELETE:[config absoluteUrl]
                                     parameters:[config parameters]
                                        success:success
                                        failure:failure];
         }   break;
-        case IUNetworkingRequestMethod_HEAD:
+        case IUNetworkingRequestMethodName_HEAD:
         {
             self.task = [sessionManager HEAD:[config absoluteUrl]
                                   parameters:[config parameters]
@@ -262,7 +228,7 @@
                                          success(task, nil);
                                      } failure:failure];
         }   break;
-        case IUNetworkingRequestMethod_FORM_DATA:
+        case IUNetworkingRequestMethodName_FORM_DATA:
         {
             void(^block)(id<AFMultipartFormData>) = ^(id<AFMultipartFormData>  _Nonnull formData) {
                 [config.files enumerateObjectsUsingBlock:^(IURequestUploadFile * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -280,6 +246,7 @@
                                      failure:failure];
         }   break;
         default:
+            self.task = nil;
             comletion();
             break;
     }

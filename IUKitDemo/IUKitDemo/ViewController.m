@@ -7,12 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "TestDataFetcher.h"
 
 @interface ViewController ()
-{
-    TestDataFetcher *_f;
-}
+
 @end
 
 @implementation ViewController
@@ -24,13 +21,13 @@
     
     [IURequestConfig globalConfig].enableRequestLog = YES;
     
-    _f = [TestDataFetcher dataFetcher];
-    _f.config.fakeRequest = YES;
-    _f.parameters = @{
-                      @"version" : @"1.0.0",
-                      @"platform" : @0
-                      };
     NSLog(@"%@", [NSURL URLWithString:@"http://多舒服的方式地方?多舒服就离开=都是发挥空间"].absoluteString);
+    
+    IURequestConfig *config = [IURequestConfig config];
+  
+    NSLog(@"%@", config);
+    IURequestConfig *config2 = [config deepCopy];
+    NSLog(@"%@", config2);
 
     [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
 }

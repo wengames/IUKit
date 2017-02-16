@@ -34,7 +34,6 @@ typedef id<IUNetworkingRequestDelegate>(^IUNetworkWeakRequestor)(void);
 - (void)request:(IURequest *)request didStart:(NSInteger)requestingCount;
 - (void)request:(IURequest *)request didComplete:(NSInteger)requestingCount;
 - (void)request:(IURequest *)request didFailWithError:(NSError *)error;
-- (void)requestDidDelayByNetworkNotReachable:(IURequest *)request;
 
 @end
 

@@ -65,6 +65,7 @@ static char TAG_ORIGIN_FRAME;
     if (tapGestureRecognizer == nil) {
         tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
         objc_setAssociatedObject(self, _cmd, tapGestureRecognizer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        tapGestureRecognizer.cancelsTouchesInView = NO;
     }
     return tapGestureRecognizer;
 }

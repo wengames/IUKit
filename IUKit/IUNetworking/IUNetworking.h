@@ -11,7 +11,7 @@
 
 #ifdef __OBJC__
 
-#import "IUDataFetcher.h"
+#import "IURequest.h"
 #import "IURequestorRegistrar.h"
 
 #endif

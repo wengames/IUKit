@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "IURequestConfig.h"
-
-@interface IURequest : NSObject
+#import "IURequestResult.h"
 
 typedef void(^IUNetworkingConfiguration)(IURequestConfig *config);
 
+@interface IURequest : NSObject
+
 @property (nonatomic, strong, readonly) IURequestConfig *config;
-@property (nonatomic, assign) BOOL autoCancel; // default is NO
+@property (nonatomic, strong, readonly) IURequestResult *result;
 
 /**
  *  start request, and cancel task before
@@ -26,11 +27,11 @@ typedef void(^IUNetworkingConfiguration)(IURequestConfig *config);
  */
 - (void)cancel;
 
-/**
- *  Override point
- */
-- (id)convertModelFromData:(id)data;
-- (id)convertDataFromModel:(id)model;
+///**
+// *  Override point
+// */
+//- (id)convertModelFromData:(id)data;
+//- (id)convertDataFromModel:(id)model;
 
 /**
  *  Override point
@@ -69,8 +70,7 @@ typedef void(^IUNetworkingConfiguration)(IURequestConfig *config);
  *  @param parameters   接口传参
  *  @param success      接口成功的回调
  */
-+ (instancetype)post_url:(NSString *)api parameters:(id)parameters success:(IUNetworkingSuccess)success;
-+ (instancetype)post_json:(NSString *)api parameters:(id)parameters success:(IUNetworkingSuccess)success;
++ (instancetype)post:(NSString *)api parameters:(id)parameters success:(IUNetworkingSuccess)success;
 
 /**
  *  Start Upload files
