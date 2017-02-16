@@ -56,6 +56,14 @@
     return [UIColor colorWithRed:r green:g blue:b alpha:a];
 }
 
+- (UIColor *)disabledColor {
+    CGFloat r,g,b,a;
+    [self getRed:&r green:&g blue:&b alpha:&a];
+    r+=2.0; g+=2.0; b+=2.0; a+=2.0;
+    r/=3.0; g/=3.0; b/=3.0; a/=3.0;
+    return [UIColor colorWithRed:r green:g blue:b alpha:a];
+}
+
 - (UIColor *)invertColor {
     CGFloat r,g,b,a;
     [self getRed:&r green:&g blue:&b alpha:&a];

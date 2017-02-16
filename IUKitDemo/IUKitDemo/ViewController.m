@@ -30,7 +30,7 @@
     IURequestConfig *config2 = [config deepCopy];
     NSLog(@"%@", config2);
 
-    [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
+    [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setClearButtonMode(UITextFieldViewModeWhileEditing).setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
 }
 
 @end

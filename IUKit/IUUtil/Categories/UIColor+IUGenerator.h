@@ -17,6 +17,7 @@
 + (UIColor *)colorWithHex:(long)hex alpha:(float)alpha;
 
 - (UIColor *)highlightedColor;
+- (UIColor *)disabledColor;
 - (UIColor *)invertColor;
 
 - (CGFloat)red;

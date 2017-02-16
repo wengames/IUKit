@@ -43,4 +43,6 @@ typedef enum {
 
 + (instancetype)resultWithConfig:(IURequestConfig *)config task:(NSURLSessionDataTask *)task responseObject:(id)responseObject error:(NSError *)error;
 
+- (void)fakeDataTypeWrong;
+
 @end

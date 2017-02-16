@@ -11,6 +11,6 @@
 @interface UIButton (IUColor)
 
 @property (nonatomic, strong) UIColor *titleColor;
-@property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong) UIColor *backgroundImageColor;
 
 @end

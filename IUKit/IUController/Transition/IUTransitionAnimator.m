@@ -571,7 +571,6 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
                         options:UIViewAnimationOptionBeginFromCurrentState | (self.animationCurve << 16)
                      animations: ^{
                          animations();
-                         [containerView layoutIfNeeded];
                      } completion:^(BOOL finished) {
                          
                          [transitionContext completeTransition:!transitionContext.transitionWasCancelled];

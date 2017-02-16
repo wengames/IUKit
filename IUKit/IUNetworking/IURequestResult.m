@@ -36,7 +36,11 @@
                 _model = [self.config.modelClass randomData];
             }
         } else if (_responseObject) {
-            _model = [self.config.modelClass mj_objectWithKeyValues:self.responseObject];
+            if ([_responseObject isKindOfClass:[NSArray class]]) {
+                _model = [self.config.modelClass mj_objectWithKeyValues:self.responseObject];
+            } else {
+                _model = [self.config.modelClass mj_objectWithKeyValues:self.responseObject];
+            }
         }
     }
     return _model;
@@ -52,6 +56,22 @@
     } else {
         return IURequestResultTypeRequestFailureWithError;
     }
+}
+
+- (void)fakeDataTypeWrong {
+    _responseObject = nil;
+    _model = @[
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData],
+               [self.config.modelClass randomData]
+               ];
 }
 
 @end

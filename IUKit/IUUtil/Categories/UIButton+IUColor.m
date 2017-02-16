@@ -8,7 +8,6 @@
 
 #import "UIButton+IUColor.h"
 #import "UIColor+IUGenerator.h"
-#import "IUMethodSwizzling.h"
 
 UIImage *imageWithColor(UIColor *color) {
     CGRect rect = CGRectMake(0, 0, 1, 1);
@@ -23,23 +22,24 @@ UIImage *imageWithColor(UIColor *color) {
 
 @implementation UIButton (IUColor)
 
-+ (void)load {
-    [self swizzleInstanceSelector:@selector(setBackgroundColor:) toSelector:@selector(iuColor_UIButton_setBackgroundColor:)];
-}
-
 - (void)setTitleColor:(UIColor *)titleColor {
     [self setTitleColor:titleColor forState:UIControlStateNormal];
     [self setTitleColor:[titleColor highlightedColor] forState:UIControlStateHighlighted];
+    [self setTitleColor:[titleColor highlightedColor] forState:UIControlStateDisabled];
 }
 
 - (UIColor *)titleColor {
     return [self titleColorForState:UIControlStateNormal];
 }
 
-- (void)iuColor_UIButton_setBackgroundColor:(UIColor *)backgroundColor {
-    [self iuColor_UIButton_setBackgroundColor:backgroundColor];
-    [self setBackgroundImage:imageWithColor(backgroundColor) forState:UIControlStateNormal];
-    [self setBackgroundImage:imageWithColor([backgroundColor highlightedColor]) forState:UIControlStateHighlighted];
+- (void)setBackgroundImageColor:(UIColor *)backgroundImageColor {
+    [self setBackgroundImage:imageWithColor(backgroundImageColor) forState:UIControlStateNormal];
+    [self setBackgroundImage:imageWithColor([backgroundImageColor highlightedColor]) forState:UIControlStateHighlighted];
+    [self setBackgroundImage:imageWithColor([backgroundImageColor highlightedColor]) forState:UIControlStateDisabled];
+}
+
+- (UIColor *)backgroundImageColor {
+    return nil;
 }
 
 @end

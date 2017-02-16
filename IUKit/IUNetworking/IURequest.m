@@ -139,7 +139,18 @@
             IUNLog(@"✅request success\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request response : %@", [config absoluteUrl], [config methodNameString], [config parameters], result.responseObject);
         }
         [IURequestorRegistrar sharedInstance].requestors = self.requestors;
-        if ((!config.globalSuccess || config.globalSuccess(result)) && config.success) config.success(result);
+        
+        if (config.fakeRequest) {
+            @try {
+                if ((!config.globalSuccess || config.globalSuccess(result)) && config.success) config.success(result);
+            } @catch (NSException *exception) {
+                [result fakeDataTypeWrong];
+                if ((!config.globalSuccess || config.globalSuccess(result)) && config.success) config.success(result);
+            }
+        } else {
+            if ((!config.globalSuccess || config.globalSuccess(result)) && config.success) config.success(result);
+        }
+        
         [[IURequestorRegistrar sharedInstance] clear];
         comletion();
         self.result = result;
