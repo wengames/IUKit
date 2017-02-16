@@ -30,9 +30,16 @@ typedef void(^IUNetworkingConfiguration)(IURequestConfig *config);
 /**
  *  Generate request and start
  *
- *  @param configuration    请求配置
+ *  @param configuration    config the config
  */
 + (instancetype)request:(IUNetworkingConfiguration)configuration;
+
+/**
+ *  Generate request and start
+ *
+ *  @param config     the config
+ */
++ (instancetype)requestWithConfig:(IURequestConfig *)config;
 
 #pragma mark Fast Api
 /**

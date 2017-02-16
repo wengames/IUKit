@@ -12,13 +12,13 @@
 
 @implementation IURequestResult
 
-+ (instancetype)resultWithConfig:(IURequestConfig *)config task:(NSURLSessionDataTask *)task responseObject:(id)responseObject error:(NSError *)error {
++ (instancetype)resultWithConfig:(IURequestConfig *)config task:(NSURLSessionDataTask *)task responseObject:(id)responseObject error:(NSError *)error request:(IURequest *__weak)request {
     IURequestResult *result = [[self alloc] init];
     result->_config = config;
     result->_task = task;
     result->_responseObject = responseObject;
     result->_error = error;
-    
+    result->_request = request;
     return result;
 }
 

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "IURequestConfig.h"
 
+@class IURequest;
+
 typedef enum {
     IURequestResultTypeRequestSuccess = 0,
     IURequestResultTypeNetworkCancelled,
@@ -41,7 +43,9 @@ typedef enum {
 @property (nonatomic, readonly) NSInteger httpStatusCode;
 @property (nonatomic, readonly) IURequestResultType type;
 
-+ (instancetype)resultWithConfig:(IURequestConfig *)config task:(NSURLSessionDataTask *)task responseObject:(id)responseObject error:(NSError *)error;
+@property (nonatomic, readonly, weak) IURequest *request;
+
++ (instancetype)resultWithConfig:(IURequestConfig *)config task:(NSURLSessionDataTask *)task responseObject:(id)responseObject error:(NSError *)error request:(IURequest *__weak)request;
 
 - (void)fakeDataTypeWrong;
 
