@@ -26,10 +26,6 @@ typedef enum {
     
     @protected id _responseObject;
     @protected id _model;
-    
-    @protected NSDictionary *_responseHeaders;
-    @protected NSInteger _httpStatusCode;
-    @protected IURequestResultType _type;
 }
 
 @property (nonatomic, strong, readonly) IURequestConfig *config;

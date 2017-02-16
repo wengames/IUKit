@@ -46,6 +46,20 @@
     return _model;
 }
 
+- (NSInteger)httpStatusCode {
+    if ([self.task.response isKindOfClass:[NSHTTPURLResponse class]]) {
+        return [(NSHTTPURLResponse *)self.task.response statusCode];
+    }
+    return 200;
+}
+
+- (NSDictionary *)responseHeaders {
+    if ([self.task.response isKindOfClass:[NSHTTPURLResponse class]]) {
+        return [(NSHTTPURLResponse *)self.task.response allHeaderFields];
+    }
+    return nil;
+}
+
 - (IURequestResultType)type {
     if (self.responseObject || self.config.fakeRequest) {
         return IURequestResultTypeRequestSuccess;
