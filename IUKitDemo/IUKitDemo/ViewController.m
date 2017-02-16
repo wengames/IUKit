@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "TestRequestResult.h"
 
 @interface ViewController ()
 

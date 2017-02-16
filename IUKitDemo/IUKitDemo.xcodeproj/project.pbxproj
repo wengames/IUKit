@@ -126,6 +126,7 @@
 		84BAD4D21E5452F4006EF1C8 /* IUFadeModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */; };
 		84BAD4D61E545A9D006EF1C8 /* IUWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4D51E545A9D006EF1C8 /* IUWebViewController.m */; };
 		84BAD51A1E554880006EF1C8 /* IURequestResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD5191E554880006EF1C8 /* IURequestResult.m */; };
+		84BAD52F1E557A51006EF1C8 /* TestRequestResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD52E1E557A51006EF1C8 /* TestRequestResult.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -379,6 +380,8 @@
 		84BAD4D51E545A9D006EF1C8 /* IUWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUWebViewController.m; sourceTree = "<group>"; };
 		84BAD5181E554880006EF1C8 /* IURequestResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IURequestResult.h; sourceTree = "<group>"; };
 		84BAD5191E554880006EF1C8 /* IURequestResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IURequestResult.m; sourceTree = "<group>"; };
+		84BAD52D1E557A51006EF1C8 /* TestRequestResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestRequestResult.h; sourceTree = "<group>"; };
+		84BAD52E1E557A51006EF1C8 /* TestRequestResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestRequestResult.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -417,6 +420,8 @@
 				8443971A1E51BABF00EA8989 /* ViewController.m */,
 				844398CB1E53FA0500EA8989 /* TestModel.h */,
 				844398CC1E53FA0500EA8989 /* TestModel.m */,
+				84BAD52D1E557A51006EF1C8 /* TestRequestResult.h */,
+				84BAD52E1E557A51006EF1C8 /* TestRequestResult.m */,
 				844397321E51BC8800EA8989 /* PrefixHeader.pch */,
 				844398471E52997A00EA8989 /* Dependencies */,
 				8443972A1E51BC6C00EA8989 /* IUKit */,
@@ -968,6 +973,7 @@
 				844398C71E53F0D500EA8989 /* IUBaseModel.m in Sources */,
 				8443983F1E51CF2F00EA8989 /* UIView+IUEmpty.m in Sources */,
 				844398391E51CF2F00EA8989 /* NSString+IURegex.m in Sources */,
+				84BAD52F1E557A51006EF1C8 /* TestRequestResult.m in Sources */,
 				84BAD4301E542D4D006EF1C8 /* UIImage+IUTransform.m in Sources */,
 				844398811E529B7400EA8989 /* IURequestorRegistrar.m in Sources */,
 				8443989C1E529BCE00EA8989 /* MJPropertyType.m in Sources */,

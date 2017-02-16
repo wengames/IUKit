@@ -28,20 +28,6 @@ typedef void(^IUNetworkingConfiguration)(IURequestConfig *config);
 - (void)cancel;
 
 /**
- *  Override point
- *  default config
- *  one fetcher one request
- */
-+ (IURequestConfig *)defaultRequestConfig;
-
-/**
- *  Generate request
- *
- *  @param configuration    请求配置
- */
-+ (instancetype)generateRequest:(IUNetworkingConfiguration)configuration;
-
-/**
  *  Generate request and start
  *
  *  @param configuration    请求配置

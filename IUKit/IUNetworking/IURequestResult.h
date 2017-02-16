@@ -17,6 +17,18 @@ typedef enum {
 } IURequestResultType;
 
 @interface IURequestResult : NSObject
+{
+    @protected IURequestConfig *_config;
+    @protected NSURLSessionDataTask *_task;
+    @protected NSError *_error;
+    
+    @protected id _responseObject;
+    @protected id _model;
+    
+    @protected NSDictionary *_responseHeaders;
+    @protected NSInteger _httpStatusCode;
+    @protected IURequestResultType _type;
+}
 
 @property (nonatomic, strong, readonly) IURequestConfig *config;
 @property (nonatomic, strong, readonly) NSURLSessionDataTask *task;
