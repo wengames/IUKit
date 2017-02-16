@@ -18,30 +18,30 @@ typedef enum {
 } IUNetworkingRequestSerializerType;
 
 typedef enum {
-    IUNetworkingRequestMethodName_GET       = 0 << 2, // GET
-    IUNetworkingRequestMethodName_POST      = 1 << 2, // POST
-    IUNetworkingRequestMethodName_DELETE    = 2 << 2, // DELETE
-    IUNetworkingRequestMethodName_PUT       = 3 << 2, // PUT
-    IUNetworkingRequestMethodName_HEAD      = 4 << 2, // HEAD
-    IUNetworkingRequestMethodName_FORM_DATA = 5 << 2  // form-data
+    IUNetworkingRequestMethodName_GET       = 0, // GET
+    IUNetworkingRequestMethodName_POST      = 1, // POST
+    IUNetworkingRequestMethodName_DELETE    = 2, // DELETE
+    IUNetworkingRequestMethodName_PUT       = 3, // PUT
+    IUNetworkingRequestMethodName_HEAD      = 4, // HEAD
+    IUNetworkingRequestMethodName_FORM_DATA = 5  // form-data
 } IUNetworkingRequestMethodName;
 
 typedef enum {
     /* normal */
-    IUNetworkingRequestMethod_GET           = IUNetworkingRequestMethodName_GET     | IUNetworkingRequestSerializerType_URL,
-    IUNetworkingRequestMethod_POST          = IUNetworkingRequestMethodName_POST    | IUNetworkingRequestSerializerType_JSON,
-    IUNetworkingRequestMethod_DELETE        = IUNetworkingRequestMethodName_DELETE  | IUNetworkingRequestSerializerType_JSON,
-    IUNetworkingRequestMethod_PUT           = IUNetworkingRequestMethodName_PUT     | IUNetworkingRequestSerializerType_JSON,
-    IUNetworkingRequestMethod_HEAD          = IUNetworkingRequestMethodName_HEAD    | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_GET           = IUNetworkingRequestMethodName_GET     << 2 | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_POST          = IUNetworkingRequestMethodName_POST    << 2 | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_DELETE        = IUNetworkingRequestMethodName_DELETE  << 2 | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_PUT           = IUNetworkingRequestMethodName_PUT     << 2 | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_HEAD          = IUNetworkingRequestMethodName_HEAD    << 2 | IUNetworkingRequestSerializerType_JSON,
     
     /* form-data */
-    IUNetworkingRequestMethod_FORM_DATA     = IUNetworkingRequestMethodName_FORM_DATA | IUNetworkingRequestSerializerType_JSON,
+    IUNetworkingRequestMethod_FORM_DATA     = IUNetworkingRequestMethodName_FORM_DATA << 2 | IUNetworkingRequestSerializerType_JSON,
     
     /* other */
-    IUNetworkingRequestMethod_POST_URL      = IUNetworkingRequestMethodName_POST    | IUNetworkingRequestSerializerType_URL,
-    IUNetworkingRequestMethod_DELETE_URL    = IUNetworkingRequestMethodName_DELETE  | IUNetworkingRequestSerializerType_URL,
-    IUNetworkingRequestMethod_PUT_URL       = IUNetworkingRequestMethodName_PUT     | IUNetworkingRequestSerializerType_URL,
-    IUNetworkingRequestMethod_HEAD_URL      = IUNetworkingRequestMethodName_HEAD    | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_POST_URL      = IUNetworkingRequestMethodName_POST    << 2 | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_DELETE_URL    = IUNetworkingRequestMethodName_DELETE  << 2 | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_PUT_URL       = IUNetworkingRequestMethodName_PUT     << 2 | IUNetworkingRequestSerializerType_URL,
+    IUNetworkingRequestMethod_HEAD_URL      = IUNetworkingRequestMethodName_HEAD    << 2 | IUNetworkingRequestSerializerType_URL,
 } IUNetworkingRequestMethod;
 
 typedef void(^IUNetworkingProgress)(NSProgress *progress);

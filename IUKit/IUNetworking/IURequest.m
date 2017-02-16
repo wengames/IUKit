@@ -134,7 +134,7 @@
     };
     // success
     void(^success)(NSURLSessionDataTask *, id) = ^(NSURLSessionDataTask *task, id responseObject) {
-        IURequestResult *result = [IURequestResult resultWithConfig:config task:task responseObject:responseObject error:nil];
+        IURequestResult *result = [config.resultClass resultWithConfig:config task:task responseObject:responseObject error:nil];
         if (config.enableRequestLog) {
             IUNLog(@"✅request success\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request response : %@", [config absoluteUrl], [config methodNameString], [config parameters], result.responseObject);
         }
@@ -157,7 +157,7 @@
     };
     // failure
     void(^failure)(NSURLSessionDataTask *, NSError *) = ^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        IURequestResult *result = [IURequestResult resultWithConfig:config task:task responseObject:nil error:error];
+        IURequestResult *result = [config.resultClass resultWithConfig:config task:task responseObject:nil error:error];
         if (task.state == NSURLSessionTaskStateCanceling) {
             if (config.enableRequestLog) {
                 IUNLog(@"❎request cancelled\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@", [config absoluteUrl], [config methodNameString], [config parameters]);
