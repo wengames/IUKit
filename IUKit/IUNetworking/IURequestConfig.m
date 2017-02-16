@@ -8,6 +8,7 @@
 
 #import "IURequestConfig.h"
 #import "NSURL+IUProtect.h"
+#import "IURequestResult.h"
 
 @implementation IURequestConfig
 
@@ -32,6 +33,10 @@
         self.headers = @{};
     }
     return self;
+}
+
+- (Class)resultClass {
+    return [_resultClass isSubclassOfClass:[IURequestResult class]] ? _resultClass : [IURequestResult class];
 }
 
 - (IUNetworkingRequestMethodName)methodName {
@@ -84,8 +89,9 @@
 - (instancetype)deepCopy {
     IURequestConfig *config = [[self.class alloc] init];
     
-    config.responseClass    = self.responseClass;
-    
+    config.resultClass      = self.resultClass;
+    config.modelClass       = self.modelClass;
+
     config.fakeRequest      = self.fakeRequest;
     config.fakeRequestDelay = self.fakeRequestDelay;
     

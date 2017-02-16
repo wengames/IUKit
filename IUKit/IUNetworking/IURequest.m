@@ -45,13 +45,9 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self->_config = [self.class defaultRequestConfig];
+        self->_config = [IURequestConfig config];
     }
     return self;
-}
-
-+ (IURequestConfig *)defaultRequestConfig {
-    return [IURequestConfig config];
 }
 
 + (instancetype)generateRequest:(IUNetworkingConfiguration)configuration {

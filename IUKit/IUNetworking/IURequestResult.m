@@ -12,43 +12,37 @@
 
 @implementation IURequestResult
 
+@synthesize responseObject = _responseObject, model = _model;;
+
 + (instancetype)resultWithConfig:(IURequestConfig *)config task:(NSURLSessionDataTask *)task responseObject:(id)responseObject error:(NSError *)error {
     IURequestResult *result = [[self alloc] init];
-    result.config = config;
-    result.task = task;
-    result.responseObject = responseObject;
-    result.error = error;
+    result->_config = config;
+    result->_task = task;
+    result->_responseObject = responseObject;
+    result->_error = error;
     
-    if (config.fakeRequest) [result makeFake];
-    else                    [result generateModel];
+    [result analysis];
     return result;
 }
 
-- (void)makeFake {
-    if ([self.config.responseClass respondsToSelector:@selector(randomData)]) {
-        self.model = [self.config.responseClass randomData];
+- (id)responseObject {
+    if (_responseObject == nil && self.config.fakeRequest && self.config.modelClass) {
+        _responseObject = [self.model mj_keyValues];
     }
-    self.responseObject = [self.model mj_keyValues];
+    return _responseObject;
 }
 
-- (void)generateModel {
-    if (self.config.responseClass) {
-        self.model = [self.config.responseClass mj_objectWithKeyValues:self.responseObject];
+- (id)model {
+    if (_model == nil && self.config.modelClass) {
+        if (self.config.fakeRequest) {
+            if ([self.config.modelClass respondsToSelector:@selector(randomData)]) {
+                _model = [self.config.modelClass randomData];
+            }
+        } else if (_responseObject) {
+            _model = [self.config.modelClass mj_objectWithKeyValues:self.responseObject];
+        }
     }
-}
-
-- (NSInteger)httpStatusCode {
-    if ([self.task.response isKindOfClass:[NSHTTPURLResponse class]]) {
-        return [(NSHTTPURLResponse *)self.task.response statusCode];
-    }
-    return 200;
-}
-
-- (NSDictionary *)responseHeaders {
-    if ([self.task.response isKindOfClass:[NSHTTPURLResponse class]]) {
-        return [(NSHTTPURLResponse *)self.task.response allHeaderFields];
-    }
-    return nil;
+    return _model;
 }
 
 - (IURequestResultType)type {

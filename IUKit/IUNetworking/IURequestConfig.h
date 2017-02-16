@@ -46,17 +46,23 @@ typedef enum {
 
 typedef void(^IUNetworkingProgress)(NSProgress *progress);
 
-typedef BOOL(^IUNetworkingGlobalSuccess)(IURequestResult *);  // return NO to stop call success block
-typedef BOOL(^IUNetworkingGlobalFailure)(IURequestResult *);     // return NO to stop call failure block
+typedef BOOL(^IUNetworkingGlobalSuccess)(__kindof IURequestResult *result);  // return NO to stop call success block
+typedef BOOL(^IUNetworkingGlobalFailure)(__kindof IURequestResult *result);     // return NO to stop call failure block
 
-typedef void(^IUNetworkingSuccess)(IURequestResult *);
-typedef void(^IUNetworkingFailure)(IURequestResult *);
+typedef void(^IUNetworkingSuccess)(__kindof IURequestResult *result);
+typedef void(^IUNetworkingFailure)(__kindof IURequestResult *result);
 typedef void(^IUNetworkingCompletion)(void);
 
 @interface IURequestConfig : NSObject
 
-// enabled by IUDataFetcher
-@property (nonatomic, strong) Class responseClass;
+// subclass of IURequestResult
+// default is IURequestResult
+@property (nonatomic, strong) Class resultClass;
+
+// model class used by result to make dto
+@property (nonatomic, strong) Class modelClass;
+
+// fake request by return random data after delay
 @property (nonatomic, assign) BOOL  fakeRequest;       // default is NO
 @property (nonatomic, assign) float fakeRequestDelay;  // time in seconds, default is 1
 

@@ -27,12 +27,6 @@ typedef void(^IUNetworkingConfiguration)(IURequestConfig *config);
  */
 - (void)cancel;
 
-///**
-// *  Override point
-// */
-//- (id)convertModelFromData:(id)data;
-//- (id)convertDataFromModel:(id)model;
-
 /**
  *  Override point
  *  default config

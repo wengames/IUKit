@@ -18,30 +18,17 @@ typedef enum {
 
 @interface IURequestResult : NSObject
 
-@property (nonatomic, strong) IURequestConfig *config;
-@property (nonatomic, strong) NSURLSessionDataTask *task;
-@property (nonatomic, strong) id responseObject;
-@property (nonatomic, strong) id error;
+@property (nonatomic, strong, readonly) IURequestConfig *config;
+@property (nonatomic, strong, readonly) NSURLSessionDataTask *task;
+@property (nonatomic, strong, readonly) NSError *error;
 
-@property (nonatomic, readonly) NSInteger     httpStatusCode;
-@property (nonatomic, readonly) NSDictionary *responseHeaders;
+@property (nonatomic, strong, readonly) id responseObject;
+@property (nonatomic, strong, readonly) id model;
+
+@property (nonatomic, strong, readonly) NSDictionary *responseHeaders;
+@property (nonatomic, readonly) NSInteger httpStatusCode;
 @property (nonatomic, readonly) IURequestResultType type;
-@property (nonatomic, strong) id model;
 
 + (instancetype)resultWithConfig:(IURequestConfig *)config task:(NSURLSessionDataTask *)task responseObject:(id)responseObject error:(NSError *)error;
-
-/**
- *  Override point for category
- *  When config.fakeRequest is YES,
- *  the method will be called for making fake model and responseObject
- */
-- (void)makeFake;
-
-/**
- *  Override point for category
- *  When config.fakeRequest is NO,
- *  the method will be called for making fake model from responseObject
- */
-- (void)generateModel;
 
 @end
