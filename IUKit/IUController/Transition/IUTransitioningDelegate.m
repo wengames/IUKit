@@ -49,9 +49,6 @@
 
 #pragma mark - UIViewControllerTransitioningDelegate
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    if (self.type == IUTransitionTypeFade) {
-        presented.modalPresentationStyle = UIModalPresentationCustom;
-    }
     IUTransitionAnimator *animator = [IUTransitionAnimator animatorWithTransitionOperation:IUTransitionOperationPresent type:self.type];
     if (self.animatorConfiguration) self.animatorConfiguration(animator);
     return animator;

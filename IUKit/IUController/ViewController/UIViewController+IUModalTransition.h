@@ -12,5 +12,6 @@
 @interface UIViewController (IUModalTransition) <IUTransitionAnimatorDelegate>
 
 @property (nonatomic, assign) IUTransitionType modalType;
+@property (nonatomic, strong) void(^animatorConfiguration)(IUTransitionAnimator *);
 
 @end

@@ -8,9 +8,12 @@
 
 #import "ViewController.h"
 #import "TestRequestResult.h"
+#import "UIImageView+WebCache.h"
 
 @interface ViewController ()
-
+{
+    UIView *_v;
+}
 @end
 
 @implementation ViewController
@@ -31,6 +34,21 @@
     NSLog(@"%@", config2);
 
     [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setClearButtonMode(UITextFieldViewModeWhileEditing).setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
+    
+//    [[[UIImageView alloc] init] sd_setImageWithURL:[NSURL URLWithString:@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];
+    _v = [[UIView alloc] initWithFrame:CGRectMake(100, 250, 100, 100)].setBackgroundColor([UIColor blueColor]).intoView(self.view);
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self presentViewController:[[IUImageBrowseViewController alloc] initWithUrls:@[@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]] animated:YES completion:nil];
+}
+
+- (NSArray *)magicViewsTransitionFromViewController:(UIViewController *)viewController {
+    return @[_v];
+}
+
+- (NSArray *)magicViewsTransitionToViewController:(UIViewController *)viewController {
+    return @[_v];
 }
 
 @end

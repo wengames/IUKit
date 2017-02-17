@@ -30,12 +30,14 @@
 
 #import "UIView+IUEmpty.h"
 #import "UIView+IUTouchAreaExpand.h"
+#import "UIView+IUFrame.h"
 #import "UITableView+IUDataBinder.h"
 #import "UIButton+IUColor.h"
 #import "UIScrollView+IURefresh.h"
 
 #import "UIViewController+IUAlertController.h"
 
+#import "IUScreenSizeAdaptor.h"
 #import "IUCollectionViewSpringFlowLayout.h"
 #import "IUForceTouchGestureRecognizer.h"
 #import "IUTabPageView.h"

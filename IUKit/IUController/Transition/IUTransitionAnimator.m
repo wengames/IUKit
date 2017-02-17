@@ -483,6 +483,10 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
                 [fromMagicView layoutIfNeeded];
                 
                 /* lift drop animation */
+                if (![fromViewController enableMagicViewsLiftDropWhenTransitionToViewController:toViewController] ||
+                    ![toViewController enableMagicViewsLiftDropWhenTransitionFromViewController:fromViewController]) {
+                    return;
+                }
 #define _kLiftHeight   8
 #define _kShadowOffset CGSizeMake(3, 10)
                 CATransform3D transform = fromMagicView.layer.transform;

@@ -18,4 +18,12 @@
     return nil;
 }
 
+- (BOOL)enableMagicViewsLiftDropWhenTransitionToViewController:(UIViewController *)viewController {
+    return YES;
+}
+
+- (BOOL)enableMagicViewsLiftDropWhenTransitionFromViewController:(UIViewController *)viewController {
+    return YES;
+}
+
 @end
