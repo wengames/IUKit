@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		842456421E56A3900022C648 /* UIScrollView+IURefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 842456411E56A3900022C648 /* UIScrollView+IURefresh.m */; };
 		843936981E5418F900D2B957 /* NSString+IUCharacterLength.m in Sources */ = {isa = PBXBuildFile; fileRef = 843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */; };
 		844397151E51BABF00EA8989 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397141E51BABF00EA8989 /* main.m */; };
 		844397181E51BABF00EA8989 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397171E51BABF00EA8989 /* AppDelegate.m */; };
@@ -130,6 +131,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		842456401E56A3900022C648 /* UIScrollView+IURefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+IURefresh.h"; sourceTree = "<group>"; };
+		842456411E56A3900022C648 /* UIScrollView+IURefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+IURefresh.m"; sourceTree = "<group>"; };
 		843936961E5418F900D2B957 /* NSString+IUCharacterLength.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IUCharacterLength.h"; sourceTree = "<group>"; };
 		843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IUCharacterLength.m"; sourceTree = "<group>"; };
 		844397101E51BABF00EA8989 /* IUKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IUKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -720,6 +723,8 @@
 				8443982A1E51CF2F00EA8989 /* UIView+IUTouchAreaExpand.m */,
 				8443982B1E51CF2F00EA8989 /* UIViewController+IUAlertController.h */,
 				8443982C1E51CF2F00EA8989 /* UIViewController+IUAlertController.m */,
+				842456401E56A3900022C648 /* UIScrollView+IURefresh.h */,
+				842456411E56A3900022C648 /* UIScrollView+IURefresh.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -978,6 +983,7 @@
 				844398811E529B7400EA8989 /* IURequestorRegistrar.m in Sources */,
 				8443989C1E529BCE00EA8989 /* MJPropertyType.m in Sources */,
 				844397CA1E51CB9E00EA8989 /* UITextView+IUTextInputRestrict.m in Sources */,
+				842456421E56A3900022C648 /* UIScrollView+IURefresh.m in Sources */,
 				8443983C1E51CF2F00EA8989 /* UIColor+IUGenerator.m in Sources */,
 				844398981E529BCE00EA8989 /* MJExtensionConst.m in Sources */,
 				844397A81E51C02F00EA8989 /* UIButton+IUChain.m in Sources */,

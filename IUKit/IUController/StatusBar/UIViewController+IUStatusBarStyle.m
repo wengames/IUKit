@@ -11,9 +11,9 @@
 @implementation UIViewController (IUStatusBarStyle)
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    CGFloat brightness = 0, alpha = 1;
-    [[self statusBarBackgroundColor] getHue:nil saturation:nil brightness:&brightness alpha:&alpha];
-    return brightness * alpha > 0.5 ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+    CGFloat w = 0;
+    [[self statusBarBackgroundColor] getWhite:&w alpha:nil];
+    return w > 0.65 ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {

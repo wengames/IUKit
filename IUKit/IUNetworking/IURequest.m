@@ -174,13 +174,15 @@
                 IUNLog(@"⚠️request failure\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request error : %@", [config absoluteUrl], [config methodNameString], [config parameters], error);
             }
             
-            if ((!config.globalFailure || config.globalFailure(result)) && config.failure) config.failure(result);
-            [requestors enumerateObjectsUsingBlock:^(IUNetworkWeakRequestor  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                id<IUNetworkingRequestDelegate> weakRequestor = obj();
-                if ([weakRequestor respondsToSelector:@selector(request:didFailWithError:)]) {
-                    [weakRequestor request:self didFailWithError:error];
-                }
-            }];
+            if (!config.globalFailure || config.globalFailure(result)) {
+                if (config.failure) config.failure(result);
+                [requestors enumerateObjectsUsingBlock:^(IUNetworkWeakRequestor  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    id<IUNetworkingRequestDelegate> weakRequestor = obj();
+                    if ([weakRequestor respondsToSelector:@selector(request:didFailWithError:)]) {
+                        [weakRequestor request:self didFailWithError:error];
+                    }
+                }];
+            }
         }
         comletion();
         self.result = result;
