@@ -246,18 +246,11 @@ static char TAG_VIEW_CONTROLLER_DISSMISS_BUTTON_ITEM_CREATED;
     if (backButtonItem == nil && ![objc_getAssociatedObject(self, &TAG_VIEW_CONTROLLER_BACK_BUTTON_ITEM_CREATED) boolValue]) {
         objc_setAssociatedObject(self, &TAG_VIEW_CONTROLLER_BACK_BUTTON_ITEM_CREATED, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
-        CGSize size = CGSizeMake(36, 60);
-        
-        UIColor *color = [UINavigationBar appearance].tintColor ?: [UIColor colorWithRed:0 green:0.5 blue:1 alpha:1];
-        CGFloat r,g,b,a;
-        [color getRed:&r green:&g blue:&b alpha:&a];
-        r+=1.0; g+=1.0; b+=1.0; a+=1.0;
-        r/=2.0; g/=2.0; b/=2.0; a/=2.0;
-        UIColor *highlightedColor = [UIColor colorWithRed:r green:g blue:b alpha:a];
+        CGSize size = CGSizeMake(12, 20);
         
         UIImage *(^getArrow)(UIColor *) = ^(UIColor *color){
-            CGFloat lineWidth = 5;
-            UIGraphicsBeginImageContext(size);
+            CGFloat lineWidth = 1.5;
+            UIGraphicsBeginImageContextWithOptions(size, NO, 3);
             CGContextRef context = UIGraphicsGetCurrentContext();
             CGContextBeginPath(context);
             CGContextMoveToPoint(context, size.width - lineWidth, lineWidth);
@@ -270,13 +263,9 @@ static char TAG_VIEW_CONTROLLER_DISSMISS_BUTTON_ITEM_CREATED;
             UIGraphicsEndImageContext();
             return image;
         };
-
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, 0, size.width / 3.f, size.height / 3.f);
-        [button setBackgroundImage:getArrow(color) forState:UIControlStateNormal];
-        [button setBackgroundImage:getArrow(highlightedColor) forState:UIControlStateHighlighted];
-        [button addTarget:self action:@selector(popBack) forControlEvents:UIControlEventTouchUpInside];
-        backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        
+        UIColor *color = self.navigationController.navigationBar.tintColor ?: [UIColor colorWithRed:0 green:0.5 blue:1 alpha:1];
+        backButtonItem = [[UIBarButtonItem alloc] initWithImage:getArrow(color) style:UIBarButtonItemStylePlain target:self action:@selector(popBack)];
         objc_setAssociatedObject(self, &TAG_VIEW_CONTROLLER_BACK_BUTTON_ITEM, backButtonItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return backButtonItem;

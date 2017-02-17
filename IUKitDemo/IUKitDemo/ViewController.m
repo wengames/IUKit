@@ -12,7 +12,7 @@
 
 @interface ViewController ()
 {
-    UIView *_v;
+    UIImageView *_v;
 }
 @end
 
@@ -21,7 +21,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.setBackgroundColor([UIColor blackColor]);
+    self.title = @"esdfsdf";
+//    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    
+//    self.view.setBackgroundColor([UIColor blackColor]);
     
     [IURequestConfig globalConfig].enableRequestLog = YES;
     
@@ -35,16 +38,29 @@
 
     [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setClearButtonMode(UITextFieldViewModeWhileEditing).setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
     
-//    [[[UIImageView alloc] init] sd_setImageWithURL:[NSURL URLWithString:@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];
-    _v = [[UIView alloc] initWithFrame:CGRectMake(100, 250, 100, 100)].setBackgroundColor([UIColor blueColor]).intoView(self.view);
+    _v = [[UIImageView alloc] initWithFrame:CGRectMake(100, 250, 100, 100)].setBackgroundColor([UIColor blueColor]).intoView(self.view);
+    _v.userInteractionEnabled = YES;
+    [_v sd_setImageWithURL:[NSURL URLWithString:@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];
+//    [self registerPreviewingWithSourceView:_v];
 }
 
+//- (UIViewController *)viewControllerForPreviewingWithSourceView:(UIView *)sourceView {
+//    return [[IUImageBrowseViewController alloc] initWithUrls:@[@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];
+//}
+
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self presentViewController:[[IUImageBrowseViewController alloc] initWithUrls:@[@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]] animated:YES completion:nil];
+//    [[IURouter router] open:@"ViewController"];
+//    [self.navigationController pushViewController:[[ViewController alloc] init] animated:YES];
+    IUImageBrowseViewController *ib = [[IUImageBrowseViewController alloc] initWithUrls:@[@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];
+    [self presentViewController:ib animated:YES completion:nil];
 }
 
 - (NSArray *)magicViewsTransitionFromViewController:(UIViewController *)viewController {
     return @[_v];
+}
+
+- (BOOL)enableMagicViewsLiftDropWhenTransitionToViewController:(UIViewController *)viewController {
+    return NO;
 }
 
 - (NSArray *)magicViewsTransitionToViewController:(UIViewController *)viewController {

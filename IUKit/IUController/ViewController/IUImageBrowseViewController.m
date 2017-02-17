@@ -7,14 +7,17 @@
 //
 
 #import "IUImageBrowseViewController.h"
+#import "IUMethodSwizzling.h"
 #import "UIImageView+WebCache.h"
 #import "UINavigationController+IUFullScreenInteractivePopGestureRecognizer.h"
 #import "UIViewController+IUMagicTransition.h"
+#import "UIViewController+IUStatusBarHidden.h"
 
 @interface _IUImageBrowserCollectionViewCell : UICollectionViewCell <UIScrollViewDelegate>
 
 @property (nonatomic, strong, readonly) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, assign) CGFloat spacing;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (nonatomic, strong) IUImageBrowseObject *object;
 
@@ -26,6 +29,7 @@
 @property (nonatomic, strong) NSArray <IUImageBrowseObject *> *objects;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UIPageControl    *pageControl;
 @property (nonatomic, strong) UITapGestureRecognizer *dismissGestureRecognizer;
 
 @end
@@ -62,7 +66,43 @@
     return [self initWithObjects:[objects copy]];
 }
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        _spacingBetweenImage = 15;
+        self.statusBarHidden = [[UIApplication sharedApplication].keyWindow.rootViewController prefersStatusBarHidden];
+    }
+    return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.statusBarHidden = YES;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    } completion:nil];
+}
+
+- (void)setSpacingBetweenImage:(CGFloat)spacingBetweenImage {
+    _spacingBetweenImage = spacingBetweenImage;
+    self.collectionView.frame = CGRectMake(-spacingBetweenImage / 2.f, 0, self.view.bounds.size.width + spacingBetweenImage, self.view.bounds.size.height);
+    [self reloadData];
+}
+
+- (void)setCurrentIndex:(NSInteger)currentIndex {
+    self.pageControl.currentPage = currentIndex;
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:currentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+}
+
+- (NSInteger)currentIndex {
+    return self.pageControl.currentPage;
+}
+
 - (void)reloadData {
+    self.pageControl.numberOfPages = [self imageNumber];
     [self.collectionView reloadData];
 }
 
@@ -71,10 +111,10 @@
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = 0;
-        layout.sectionInset = UIEdgeInsetsZero;
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        _collectionView.frame = CGRectMake(-_spacingBetweenImage / 2.f, 0, self.view.bounds.size.width + _spacingBetweenImage, self.view.bounds.size.height);
         _collectionView.backgroundColor = [UIColor blackColor];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [_collectionView registerClass:[_IUImageBrowserCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
@@ -82,12 +122,26 @@
         _collectionView.pagingEnabled = YES;
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
-        [self.view addSubview:_collectionView];
+        [self.view insertSubview:_collectionView belowSubview:self.pageControl];
         [_collectionView layoutIfNeeded];
         
         [_collectionView addGestureRecognizer:self.dismissGestureRecognizer];
     }
     return _collectionView;
+}
+
+- (UIPageControl *)pageControl {
+    if (_pageControl == nil) {
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 20)];
+        _pageControl.userInteractionEnabled = NO;
+        _pageControl.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        _pageControl.hidesForSinglePage = YES;
+        _pageControl.pageIndicatorTintColor = [UIColor colorWithWhite:1 alpha:0.5];
+        _pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
+        _pageControl.numberOfPages = [self imageNumber];
+        [self.view addSubview:_pageControl];
+    }
+    return _pageControl;
 }
 
 - (UITapGestureRecognizer *)dismissGestureRecognizer {
@@ -104,6 +158,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     _IUImageBrowserCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    cell.spacing = self.spacingBetweenImage;
     [self.dismissGestureRecognizer requireGestureRecognizerToFail:cell.doubleTapGestureRecognizer];
     cell.object = [self objectAtIndex:indexPath.item];
     return cell;
@@ -114,7 +169,18 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return self.view.bounds.size;
+    return collectionView.bounds.size;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[self.collectionView convertPoint:self.collectionView.center fromView:self.collectionView.superview]];
+    if (indexPath) {
+        self.pageControl.currentPage = indexPath.item;
+    } else if (scrollView.contentOffset.x < 0) {
+        self.pageControl.currentPage = 0;
+    } else {
+        self.pageControl.currentPage = self.pageControl.numberOfPages - 1;
+    }
 }
 
 #pragma mark Private Method
@@ -150,8 +216,12 @@
     return NO;
 }
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
 }
 
 @end
@@ -189,11 +259,19 @@
     }
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.scrollView.zoomScale = 1;
+    self.scrollView.contentSize = self.scrollView.bounds.size;
+    [self fitsImage];
+}
+
 - (void)fitsImage {
     if (self.imageView.image == nil) {
         self.imageView.frame = CGRectZero;
         return;
     }
+
     UIImage *image = self.imageView.image;
     CGSize  viewSize = self.scrollView.bounds.size;
     
@@ -221,6 +299,11 @@
                                       self.imageView.frame.size.height
                                       );
 
+}
+
+- (void)setSpacing:(CGFloat)spacing {
+    _spacing = spacing;
+    self.scrollView.frame = CGRectMake(spacing / 2.f, 0, self.contentView.bounds.size.width - spacing, self.contentView.bounds.size.height);
 }
 
 - (UIScrollView *)scrollView {
@@ -295,6 +378,30 @@
 
 + (instancetype)objectWithUrl:(NSString *)url {
     return [self objectWithImage:nil url:url];
+}
+
+@end
+
+@interface UIImageView (IUBrowser) <UIViewControllerPreviewingDelegate>
+
+@end
+
+@implementation UIImageView (IUBrowser)
+
++ (void)load {
+    [self swizzleInstanceSelector:@selector(didMoveToWindow) toSelector:@selector(iuBrowser_UIImageView_didMoveToWindow)];
+}
+
+- (void)iuBrowser_UIImageView_didMoveToWindow {
+    [self.window.rootViewController registerForPreviewingWithDelegate:self sourceView:self];
+}
+
+- (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
+    return self.image ? [[IUImageBrowseViewController alloc] initWithImages:@[self.image]] : nil;
+}
+
+- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
+    [self.window.rootViewController presentViewController:viewControllerToCommit animated:NO completion:nil];
 }
 
 @end

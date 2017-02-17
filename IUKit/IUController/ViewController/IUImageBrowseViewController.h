@@ -8,10 +8,16 @@
 
 #import "IUFadeModalViewController.h"
 
+//@interface UIImageView (IUBrowser) <UIViewControllerPreviewingDelegate>
+//
+//@end
+
 @class IUImageBrowseObject;
 @protocol IUImageBrowseViewControllerDelegate;
 
 @interface IUImageBrowseViewController : IUFadeModalViewController
+
+@property (nonatomic, assign) CGFloat spacingBetweenImage; // default is 15;
 
 @property (nonatomic) NSInteger currentIndex;
 

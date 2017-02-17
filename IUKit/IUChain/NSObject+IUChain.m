@@ -158,7 +158,7 @@ return block_with_type(struct dummy); \
     return resolved;
 }
 
-- (NSObject *(^)(__strong id *))bind {
+- (NSObject *(^)(__strong id *))assign {
     return ^(__strong id *obj) {
         *obj = self;
         return self;

@@ -27,3 +27,51 @@
 }
 
 @end
+
+@interface UINavigationController (IUMagicTransition)
+
+@end
+
+@implementation UINavigationController (IUMagicTransition)
+
+- (NSArray *)magicViewsTransitionToViewController:(UIViewController *)viewController {
+    return [self.topViewController magicViewsTransitionToViewController:viewController];
+}
+
+- (NSArray *)magicViewsTransitionFromViewController:(UIViewController *)viewController {
+    return [self.topViewController magicViewsTransitionFromViewController:viewController];
+}
+
+- (BOOL)enableMagicViewsLiftDropWhenTransitionToViewController:(UIViewController *)viewController {
+    return [self.topViewController enableMagicViewsLiftDropWhenTransitionToViewController:viewController];
+}
+
+- (BOOL)enableMagicViewsLiftDropWhenTransitionFromViewController:(UIViewController *)viewController {
+    return [self.topViewController enableMagicViewsLiftDropWhenTransitionToViewController:viewController];
+}
+
+@end
+
+@interface UITabBarController (IUMagicTransition)
+
+@end
+
+@implementation UITabBarController (IUMagicTransition)
+
+- (NSArray *)magicViewsTransitionToViewController:(UIViewController *)viewController {
+    return [self.selectedViewController magicViewsTransitionToViewController:viewController];
+}
+
+- (NSArray *)magicViewsTransitionFromViewController:(UIViewController *)viewController {
+    return [self.selectedViewController magicViewsTransitionFromViewController:viewController];
+}
+
+- (BOOL)enableMagicViewsLiftDropWhenTransitionToViewController:(UIViewController *)viewController {
+    return [self.selectedViewController enableMagicViewsLiftDropWhenTransitionToViewController:viewController];
+}
+
+- (BOOL)enableMagicViewsLiftDropWhenTransitionFromViewController:(UIViewController *)viewController {
+    return [self.selectedViewController enableMagicViewsLiftDropWhenTransitionToViewController:viewController];
+}
+
+@end

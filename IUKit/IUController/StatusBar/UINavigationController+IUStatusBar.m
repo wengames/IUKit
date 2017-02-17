@@ -7,11 +7,12 @@
 //
 
 #import "UINavigationController+IUStatusBar.h"
+#import "UIViewController+IUNavigationBarHidden.h"
 
 @implementation UINavigationController (IUStatusBar)
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return (self.isNavigationBarHidden && self.topViewController) ? [self.topViewController preferredStatusBarStyle] : [super preferredStatusBarStyle];
+    return (self.isNavigationBarHidden && self.topViewController && self.topViewController.navigationBarHidden) ? [self.topViewController preferredStatusBarStyle] : [super preferredStatusBarStyle];
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
