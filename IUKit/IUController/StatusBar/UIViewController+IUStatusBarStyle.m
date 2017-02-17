@@ -22,7 +22,7 @@
 
 - (UIColor *)statusBarBackgroundColor {
     UIGraphicsBeginImageContext(CGSizeMake(self.view.bounds.size.width, 20));
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     

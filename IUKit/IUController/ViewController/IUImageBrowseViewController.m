@@ -12,19 +12,27 @@
 #import "UINavigationController+IUFullScreenInteractivePopGestureRecognizer.h"
 #import "UIViewController+IUMagicTransition.h"
 #import "UIViewController+IUStatusBarHidden.h"
+#import "IUTransitioningDelegate.h"
 
-@interface _IUImageBrowserCollectionViewCell : UICollectionViewCell <UIScrollViewDelegate>
-
+@interface _IUImageBrowserCollectionViewCell : UICollectionViewCell <UIScrollViewDelegate,UIGestureRecognizerDelegate>
+{
+    CGAffineTransform _originTransform;
+}
 @property (nonatomic, strong, readonly) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) CGFloat spacing;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (nonatomic, strong) IUImageBrowseObject *object;
 
+@property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
+@property (nonatomic, weak)   IUImageBrowseViewController *viewController;
+
 @end
 
 @interface IUImageBrowseViewController () <UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
-
+{
+    BOOL _shouldRotate;
+}
 @property (nonatomic, weak)   id<IUImageBrowseViewControllerDelegate> browserDelegate;
 @property (nonatomic, strong) NSArray <IUImageBrowseObject *> *objects;
 
@@ -77,6 +85,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.statusBarHidden = YES;
+    _shouldRotate = YES;
 }
 
 - (void)viewDidLayoutSubviews {
@@ -224,6 +233,10 @@
     return UIInterfaceOrientationMaskAll;
 }
 
+- (BOOL)shouldAutorotate {
+    return _shouldRotate;
+}
+
 @end
 
 @implementation _IUImageBrowserCollectionViewCell
@@ -326,12 +339,21 @@
     return _doubleTapGestureRecognizer;
 }
 
+- (UIPanGestureRecognizer *)panGestureRecognizer {
+    if (_panGestureRecognizer == nil) {
+        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanDismiss:)];
+        _panGestureRecognizer.delegate = self;
+    }
+    return _panGestureRecognizer;
+}
+
 - (UIImageView *)imageView {
     if (_imageView == nil) {
         _imageView = [[UIImageView alloc] init];
         _imageView.backgroundColor = [UIColor redColor];
         _imageView.userInteractionEnabled = YES;
         [_imageView addGestureRecognizer:self.doubleTapGestureRecognizer];
+        [_imageView addGestureRecognizer:self.panGestureRecognizer];
         [self.scrollView addSubview:_imageView];
     }
     return _imageView;
@@ -356,6 +378,118 @@
     return zoomRect;
 }
 
+- (void)handlePanDismiss:(UIPanGestureRecognizer *)panGestureRecognizer {
+    switch (panGestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            NSLog(@"%@", NSStringFromCGRect(self.imageView.frame));
+            _originTransform = self.imageView.transform;
+            [(IUTransitioningDelegate *)self.viewController.transitioningDelegate beginInteractiveTransition];
+            [self.viewController dismiss];
+            NSLog(@"%@", NSStringFromCGRect(self.imageView.frame));
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+            NSLog(@"%@", NSStringFromCGRect(self.imageView.frame));
+            CGPoint translation = [panGestureRecognizer translationInView:panGestureRecognizer.view];
+            self.imageView.transform = CGAffineTransformTranslate(_originTransform, translation.x, translation.y);
+            CGFloat percent = [panGestureRecognizer translationInView:panGestureRecognizer.view].y / self.viewController.view.bounds.size.height;
+            percent = MIN(1, percent);
+            percent = MAX(0, percent);
+            [[(IUTransitioningDelegate *)self.viewController.transitioningDelegate interactiveTransition] updateInteractiveTransition:percent];
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+            if ([panGestureRecognizer translationInView:panGestureRecognizer.view].y > self.viewController.view.bounds.size.height / 12.f &&
+                [panGestureRecognizer velocityInView:panGestureRecognizer.view].y    > 0) {
+                // finish
+                CGFloat duration = [(IUTransitioningDelegate *)self.viewController.transitioningDelegate interactiveTransition].duration;
+                CGFloat percent = [(IUTransitioningDelegate *)self.viewController.transitioningDelegate interactiveTransition].percentComplete;
+                [UIView animateWithDuration:duration*(1-percent) delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseIn animations:^{
+                    self.imageView.transform = _originTransform;
+                    [self.imageView.superview layoutIfNeeded];
+                } completion:^(BOOL finished) {
+                    self.imageView.transform = _originTransform;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        self.imageView.transform = _originTransform;
+                    });
+                }];
+                [[(IUTransitioningDelegate *)self.viewController.transitioningDelegate interactiveTransition] finishInteractiveTransition];
+                [(IUTransitioningDelegate *)self.viewController.transitioningDelegate endInteractiveTransition];
+                break;
+            }
+            // no break here
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+            // cancel
+            [self animateTransitionCancel];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)animateTransitionCancel {
+    IUTransitioningDelegate *transitioningDelegate = (IUTransitioningDelegate *)self.viewController.transitioningDelegate;
+    UIPercentDrivenInteractiveTransition *interactiveTransition = transitioningDelegate.interactiveTransition;
+    __block CGFloat percent = interactiveTransition.percentComplete;
+    CGAffineTransform transform = CGAffineTransformConcat(self.imageView.transform, CGAffineTransformInvert(_originTransform));
+    __block CGFloat tx = transform.tx;
+    __block CGFloat ty = transform.ty;
+    __block int number = 20;
+    CGFloat dx = tx / number;
+    CGFloat dy = ty / number;
+    CGFloat dp = percent / number;
+
+    __block void(^blockAnimate)(void);
+    void(^animate)(void) = ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.005 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            number--;
+            tx -= dx;
+            ty -= dy;
+            percent -= dp;
+            if (number == 0) {
+                self.imageView.transform = _originTransform;
+                [interactiveTransition updateInteractiveTransition:0];
+            } else {
+                self.imageView.transform = CGAffineTransformTranslate(_originTransform, tx, ty);
+                [interactiveTransition updateInteractiveTransition:percent];
+            }
+            if (number > 0) {
+                blockAnimate();
+            } else {
+                [interactiveTransition cancelInteractiveTransition];
+                [transitioningDelegate endInteractiveTransition];
+                [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
+                    self.imageView.transform = _originTransform;
+                    [self resetImageViewFrame];
+                } completion:^(BOOL finished) {
+                    self.imageView.transform = _originTransform;
+                    [self resetImageViewFrame];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        self.imageView.transform = _originTransform;
+                        [self resetImageViewFrame];
+                    });
+                }];
+            }
+        });
+    };
+    blockAnimate = animate;
+    
+    animate();
+}
+
+- (IUImageBrowseViewController *)viewController {
+    if (_viewController == nil) {
+        UIResponder *responder = self;
+        while (responder && ![responder isKindOfClass:[IUImageBrowseViewController class]]) {
+            responder = [responder nextResponder];
+        }
+        _viewController = (IUImageBrowseViewController *)responder;
+    }
+    return _viewController;
+}
+
 #pragma mark - UIScrollViewDelegate
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return self.imageView;
@@ -363,6 +497,16 @@
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     [self resetImageViewFrame];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer == self.panGestureRecognizer) {
+        if ([UIApplication sharedApplication].statusBarOrientation != UIInterfaceOrientationPortrait) return NO;
+        CGPoint velocity = [self.panGestureRecognizer velocityInView:self.panGestureRecognizer.view];
+        return velocity.y > fabs(velocity.x);
+    }
+    return YES;
 }
 
 @end
@@ -378,30 +522,6 @@
 
 + (instancetype)objectWithUrl:(NSString *)url {
     return [self objectWithImage:nil url:url];
-}
-
-@end
-
-@interface UIImageView (IUBrowser) <UIViewControllerPreviewingDelegate>
-
-@end
-
-@implementation UIImageView (IUBrowser)
-
-+ (void)load {
-    [self swizzleInstanceSelector:@selector(didMoveToWindow) toSelector:@selector(iuBrowser_UIImageView_didMoveToWindow)];
-}
-
-- (void)iuBrowser_UIImageView_didMoveToWindow {
-    [self.window.rootViewController registerForPreviewingWithDelegate:self sourceView:self];
-}
-
-- (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
-    return self.image ? [[IUImageBrowseViewController alloc] initWithImages:@[self.image]] : nil;
-}
-
-- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
-    [self.window.rootViewController presentViewController:viewControllerToCommit animated:NO completion:nil];
 }
 
 @end

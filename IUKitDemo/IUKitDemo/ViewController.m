@@ -38,7 +38,7 @@
 
     [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setClearButtonMode(UITextFieldViewModeWhileEditing).setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
     
-    _v = [[UIImageView alloc] initWithFrame:CGRectMake(100, 250, 100, 100)].setBackgroundColor([UIColor blueColor]).intoView(self.view);
+    _v = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)].setBackgroundColor([UIColor blueColor]).intoView(self.view);
     _v.userInteractionEnabled = YES;
     [_v sd_setImageWithURL:[NSURL URLWithString:@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];
 //    [self registerPreviewingWithSourceView:_v];

@@ -74,6 +74,7 @@
 
 #pragma mark - UINavigationControllerDelegate
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC {
+    if (!self.interactiveTransitionEnabled && self.type == IUTransitionTypeDefault) return nil;
     self.isTransitioning = YES;
     IUTransitionAnimator *animator = [IUTransitionAnimator animatorWithTransitionOperation:(IUTransitionOperation)operation type:self.type];
     if (self.animatorConfiguration) self.animatorConfiguration(animator);

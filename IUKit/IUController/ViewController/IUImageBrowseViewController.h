@@ -8,10 +8,6 @@
 
 #import "IUFadeModalViewController.h"
 
-//@interface UIImageView (IUBrowser) <UIViewControllerPreviewingDelegate>
-//
-//@end
-
 @class IUImageBrowseObject;
 @protocol IUImageBrowseViewControllerDelegate;
 
