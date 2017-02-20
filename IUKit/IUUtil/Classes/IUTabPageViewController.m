@@ -18,12 +18,7 @@ static char TAG_TAB_BADGE_LABEL;
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     [super willMoveToParentViewController:parent];
     if (self.navigationController) {
-        UIGestureRecognizer *gestureRecognizer = nil;
-        @try {
-            gestureRecognizer = [self.navigationController valueForKey:@"edgeScreenInteractivePopGestureRecognizer"];
-        } @catch (NSException *exception) {
-            gestureRecognizer = self.navigationController.interactivePopGestureRecognizer;
-        }
+        UIGestureRecognizer *gestureRecognizer = self.navigationController.interactivePopGestureRecognizer;
         [self.tabPageView.tabCollectionView.panGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
         [self.tabPageView.pageCollectionView.panGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
     }

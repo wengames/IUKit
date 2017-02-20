@@ -14,6 +14,8 @@
 #import "UIViewController+IUStatusBarHidden.h"
 #import "IUTransitioningDelegate.h"
 
+#import "UIViewController+IUModalTransition.h"
+
 @interface _IUImageBrowserCollectionViewCell : UICollectionViewCell <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 {
     CGAffineTransform _originTransform;
@@ -77,14 +79,22 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         _spacingBetweenImage = 15;
-        self.statusBarHidden = [[UIApplication sharedApplication].keyWindow.rootViewController prefersStatusBarHidden];
     }
     return self;
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.collectionView.alpha = 0;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.collectionView.alpha = 1;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    self.statusBarHidden = YES;
     _shouldRotate = YES;
 }
 
@@ -93,6 +103,11 @@
     [self.collectionView performBatchUpdates:^{
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
     } completion:nil];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)setSpacingBetweenImage:(CGFloat)spacingBetweenImage {
@@ -217,24 +232,16 @@
     return CGRectEqualToRect(CGRectZero, view.bounds) ? nil : @[view];
 }
 
-- (BOOL)enableMagicViewsLiftDropWhenTransitionToViewController:(UIViewController *)viewController {
-    return NO;
-}
-
-- (BOOL)enableMagicViewsLiftDropWhenTransitionFromViewController:(UIViewController *)viewController {
-    return NO;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleDefault;
-}
-
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)shouldAutorotate {
     return _shouldRotate;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return _shouldRotate || [super prefersStatusBarHidden];
 }
 
 @end
@@ -301,7 +308,7 @@
                                       height
                                       );
     
-    self.scrollView.maximumZoomScale = 1 / scale;
+    self.scrollView.maximumZoomScale = 2 / scale;
 }
 
 - (void)resetImageViewFrame {
@@ -381,15 +388,12 @@
 - (void)handlePanDismiss:(UIPanGestureRecognizer *)panGestureRecognizer {
     switch (panGestureRecognizer.state) {
         case UIGestureRecognizerStateBegan:
-            NSLog(@"%@", NSStringFromCGRect(self.imageView.frame));
             _originTransform = self.imageView.transform;
             [(IUTransitioningDelegate *)self.viewController.transitioningDelegate beginInteractiveTransition];
             [self.viewController dismiss];
-            NSLog(@"%@", NSStringFromCGRect(self.imageView.frame));
             break;
         case UIGestureRecognizerStateChanged:
         {
-            NSLog(@"%@", NSStringFromCGRect(self.imageView.frame));
             CGPoint translation = [panGestureRecognizer translationInView:panGestureRecognizer.view];
             self.imageView.transform = CGAffineTransformTranslate(_originTransform, translation.x, translation.y);
             CGFloat percent = [panGestureRecognizer translationInView:panGestureRecognizer.view].y / self.viewController.view.bounds.size.height;
@@ -406,13 +410,7 @@
                 CGFloat percent = [(IUTransitioningDelegate *)self.viewController.transitioningDelegate interactiveTransition].percentComplete;
                 [UIView animateWithDuration:duration*(1-percent) delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseIn animations:^{
                     self.imageView.transform = _originTransform;
-                    [self.imageView.superview layoutIfNeeded];
-                } completion:^(BOOL finished) {
-                    self.imageView.transform = _originTransform;
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        self.imageView.transform = _originTransform;
-                    });
-                }];
+                } completion:nil];
                 [[(IUTransitioningDelegate *)self.viewController.transitioningDelegate interactiveTransition] finishInteractiveTransition];
                 [(IUTransitioningDelegate *)self.viewController.transitioningDelegate endInteractiveTransition];
                 break;
@@ -462,15 +460,7 @@
                 [transitioningDelegate endInteractiveTransition];
                 [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
                     self.imageView.transform = _originTransform;
-                    [self resetImageViewFrame];
-                } completion:^(BOOL finished) {
-                    self.imageView.transform = _originTransform;
-                    [self resetImageViewFrame];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        self.imageView.transform = _originTransform;
-                        [self resetImageViewFrame];
-                    });
-                }];
+                } completion:nil];
             }
         });
     };

@@ -254,6 +254,8 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
                     case IUTransitionOperationPresent:
                     {
                         custom_prepare = ^{
+                            toViewController.view.frame = toFinalFrame;
+                            [toViewController.view layoutIfNeeded];
                             toViewController.view.alpha = 0.0;
                         };
                         custom_animations = ^{
@@ -454,121 +456,11 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
         }
     }
     
-    // magic move
-    do {
-        NSArray <UIView *> *fromMagicViews = [fromViewController magicViewsTransitionToViewController:toViewController];
-        NSArray <UIView *> *toMagicViews = [toViewController magicViewsTransitionFromViewController:fromViewController];
-        
-        if ([fromMagicViews count] == 0 || [fromMagicViews count] != [toMagicViews count]) break;
-
-        static NSString *MAGIC_VIEW_ANIMATION_KEY = @"MAGIC_VIEW_ANIMATION_KEY";
-        
-        for (int i = 0; i < [fromMagicViews count]; i++) {
-            UIView *fromMagicView = fromMagicViews[i];
-            UIView *toMagicView = toMagicViews[i];
-            
-            prepare = ^{
-                prepare();
-                fromMagicView.frame = [containerView convertRect:fromMagicView.bounds fromView:fromMagicView];
-                [containerView addSubview:fromMagicView];
-                fromMagicView.frame = [containerView convertRect:fromMagicView.bounds fromView:fromMagicView];
-                toMagicView.hidden = YES;
-            };
-            
-            animations = ^{
-                animations();
-                
-                /* move animation */
-                fromMagicView.frame = [containerView convertRect:toMagicView.bounds fromView:toMagicView];
-                [fromMagicView layoutIfNeeded];
-                
-                /* lift drop animation */
-                if (![fromViewController enableMagicViewsLiftDropWhenTransitionToViewController:toViewController] ||
-                    ![toViewController enableMagicViewsLiftDropWhenTransitionFromViewController:fromViewController]) {
-                    return;
-                }
-#define _kLiftHeight   8
-#define _kShadowOffset CGSizeMake(3, 10)
-                CATransform3D transform = fromMagicView.layer.transform;
-                
-                CAAnimationGroup *animation = [[CAAnimationGroup alloc] init];
-                animation.duration = [self transitionDuration:transitionContext];
-                animation.removedOnCompletion = NO;
-                animation.fillMode = kCAFillModeForwards;
-                
-                // lift
-                CAAnimationGroup *lift = [[CAAnimationGroup alloc] init];
-                lift.duration = animation.duration * 0.2;
-                lift.beginTime = 0;
-                lift.removedOnCompletion = NO;
-                lift.fillMode = kCAFillModeForwards;
-                {
-                    CABasicAnimation *shadowOffsetAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOffset"];
-                    shadowOffsetAnimation.duration = lift.duration;
-                    shadowOffsetAnimation.byValue = [NSValue valueWithCGSize:_kShadowOffset];
-                    
-                    CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
-                    shadowOpacityAnimation.duration = lift.duration;
-                    shadowOpacityAnimation.byValue = @0.5;
-                    
-                    CABasicAnimation *trasformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-                    trasformAnimation.duration = lift.duration;
-                    transform = CATransform3DTranslate(transform, 0, -_kLiftHeight, 0);
-                    trasformAnimation.toValue = [NSValue valueWithCATransform3D:transform];
-                    
-                    lift.animations = @[shadowOffsetAnimation, shadowOpacityAnimation, trasformAnimation];
-                }
-                
-                // drop
-                CAAnimationGroup *drop = [[CAAnimationGroup alloc] init];
-                drop.beginTime = lift.duration;
-                drop.duration = animation.duration - drop.beginTime;
-                drop.removedOnCompletion = NO;
-                drop.fillMode = kCAFillModeForwards;
-                {
-                    CABasicAnimation *shadowOffsetAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOffset"];
-                    shadowOffsetAnimation.duration = drop.duration;
-                    shadowOffsetAnimation.toValue = [NSValue valueWithCGSize:fromMagicView.layer.shadowOffset];
-                    
-                    CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
-                    shadowOpacityAnimation.duration = drop.duration;
-                    shadowOpacityAnimation.toValue = @(fromMagicView.layer.shadowOpacity);
-                    
-                    CABasicAnimation *trasformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-                    trasformAnimation.duration = drop.duration;
-                    transform = CATransform3DTranslate(transform, 0, _kLiftHeight, 0);
-                    trasformAnimation.toValue = [NSValue valueWithCATransform3D:transform];
-                    
-                    drop.animations = @[shadowOffsetAnimation, shadowOpacityAnimation, trasformAnimation];
-                }
-                
-                // set animation
-                animation.animations = @[lift, drop];
-                [animation setValue:fromMagicView forKey:MAGIC_VIEW_ANIMATION_KEY];
-                [fromMagicView.layer addAnimation:animation forKey:MAGIC_VIEW_ANIMATION_KEY];
-                
-            };
-            
-            __weak UIView *weakFromView = fromMagicView;
-            __weak UIView *weakToView = toMagicView;
-            __weak UIView *weakSuperview = fromMagicView.superview;
-            CGRect frame = fromMagicView.frame;
-            BOOL toViewHidden = toMagicView.hidden;
-            completion = ^(BOOL finished) {
-                completion(finished);
-                [weakSuperview addSubview:weakFromView];
-                weakFromView.frame = frame;
-                weakToView.hidden = toViewHidden;
-                [weakFromView.layer removeAnimationForKey:MAGIC_VIEW_ANIMATION_KEY];
-            };
-        }
-        
-    } while (0);
-    
-    fromViewController.view.userInteractionEnabled = NO;
-    toViewController.view.userInteractionEnabled = NO;
-    
-    prepare();
+    [UIView performWithoutAnimation:^{
+        fromViewController.view.userInteractionEnabled = NO;
+        toViewController.view.userInteractionEnabled = NO;
+        prepare();
+    }];
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0

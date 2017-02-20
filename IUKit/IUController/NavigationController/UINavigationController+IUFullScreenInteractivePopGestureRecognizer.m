@@ -13,13 +13,10 @@
 
 static char TAG_TRANSITION_GESTURE_RECOGNIZER_HELPER;
 
-@interface _IUNavigationControllerGestureRecognizerHelper : NSObject <UIGestureRecognizerDelegate,UINavigationControllerDelegate>
+@interface _IUNavigationControllerGestureRecognizerHelper : NSObject <UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) UINavigationController *navigationController;
-
-@property (nonatomic, strong, readonly) UIScreenEdgePanGestureRecognizer *edgePanGestureRecognizer;
 @property (nonatomic, strong, readonly) UIPanGestureRecognizer  *panGestureRecognizer;
-@property (nonatomic, strong, readonly) IUTransitioningDelegate *transitioningDelegate;
 
 @end
 
@@ -38,7 +35,6 @@ static char TAG_TRANSITION_GESTURE_RECOGNIZER_HELPER;
 @implementation UINavigationController (IUFullScreenInteractivePopGestureRecognizer)
 
 + (void)load {
-    [self swizzleInstanceSelector:@selector(setDelegate:) toSelector:@selector(iuFullScreenInteractivePopGestureRecognizer_UINavigationController_setDelegate:)];
     [self swizzleInstanceSelector:@selector(viewWillAppear:) toSelector:@selector(iuFullScreenInteractivePopGestureRecognizer_UINavigationController_viewWillAppear:)];
     [self swizzleInstanceSelector:@selector(viewDidLoad) toSelector:@selector(iuFullScreenInteractivePopGestureRecognizer_UINavigationController_viewDidLoad)];
 }
@@ -50,11 +46,7 @@ static char TAG_TRANSITION_GESTURE_RECOGNIZER_HELPER;
 
 - (void)iuFullScreenInteractivePopGestureRecognizer_UINavigationController_viewDidLoad {
     [self iuFullScreenInteractivePopGestureRecognizer_UINavigationController_viewDidLoad];
-    self.transitionGestureRecognizerHelper.panGestureRecognizer.enabled = YES;
-}
-
-- (void)iuFullScreenInteractivePopGestureRecognizer_UINavigationController_setDelegate:(id<UINavigationControllerDelegate>)delegate {
-    self.transitionGestureRecognizerHelper.transitioningDelegate.delegate = delegate;
+    self.interactivePopGestureRecognizer.delegate = self.transitionGestureRecognizerHelper;
 }
 
 - (_IUNavigationControllerGestureRecognizerHelper *)transitionGestureRecognizerHelper {
@@ -63,14 +55,8 @@ static char TAG_TRANSITION_GESTURE_RECOGNIZER_HELPER;
         helper = [[_IUNavigationControllerGestureRecognizerHelper alloc] init];
         objc_setAssociatedObject(self, &TAG_TRANSITION_GESTURE_RECOGNIZER_HELPER, helper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         helper.navigationController = self;
-        
-        self.interactivePopGestureRecognizer.enabled = NO;
-        [self.view removeGestureRecognizer:self.interactivePopGestureRecognizer];
-        
-        [self iuFullScreenInteractivePopGestureRecognizer_UINavigationController_setDelegate:helper.transitioningDelegate];
         [self.view addGestureRecognizer:helper.panGestureRecognizer];
-        [self.view addGestureRecognizer:helper.edgePanGestureRecognizer];
-        [helper.panGestureRecognizer requireGestureRecognizerToFail:helper.edgePanGestureRecognizer];
+        [helper.panGestureRecognizer requireGestureRecognizerToFail:self.interactivePopGestureRecognizer];
     }
     return helper;
 }
@@ -79,102 +65,44 @@ static char TAG_TRANSITION_GESTURE_RECOGNIZER_HELPER;
     return self.transitionGestureRecognizerHelper.panGestureRecognizer;
 }
 
-- (UIGestureRecognizer *)edgeScreenInteractivePopGestureRecognizer {
-    return self.transitionGestureRecognizerHelper.edgePanGestureRecognizer;
-}
-
-- (void)setPopDuration:(float)duration {
-    self.transitionGestureRecognizerHelper.transitioningDelegate.animatorConfiguration = ^(IUTransitionAnimator *animator){
-        animator.duration = duration;
-    };
-}
-
-- (void)setPopType:(IUNavigationPopType)type {
-    switch (type) {
-        case IUNavigationPopTypeDefault:
-            self.transitionGestureRecognizerHelper.transitioningDelegate.type = IUTransitionTypeDefault;
-            break;
-        case IUNavigationPopTypeErase:
-            self.transitionGestureRecognizerHelper.transitioningDelegate.type = IUTransitionTypeErase;
-            break;
-
-        default:
-            break;
-    }
-}
-
 @end
 
 @implementation _IUNavigationControllerGestureRecognizerHelper
 
-@synthesize edgePanGestureRecognizer = _edgePanGestureRecognizer, panGestureRecognizer = _panGestureRecognizer, transitioningDelegate = _transitioningDelegate;
-
-- (UIScreenEdgePanGestureRecognizer *)edgePanGestureRecognizer {
-    if (_edgePanGestureRecognizer == nil) {
-        _edgePanGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-        _edgePanGestureRecognizer.edges = UIRectEdgeLeft;
-        _edgePanGestureRecognizer.delegate = self;
-    }
-    return _edgePanGestureRecognizer;
-}
+@synthesize panGestureRecognizer = _panGestureRecognizer;
 
 - (UIPanGestureRecognizer *)panGestureRecognizer {
     if (_panGestureRecognizer == nil) {
-        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] init];
         _panGestureRecognizer.delegate = self;
     }
     return _panGestureRecognizer;
 }
 
-
-- (IUTransitioningDelegate *)transitioningDelegate {
-    if (_transitioningDelegate == nil) {
-        _transitioningDelegate = [IUTransitioningDelegate transitioningDelegateWithType:IUTransitionTypeDefault];
-        _transitioningDelegate.animatorConfiguration = ^(IUTransitionAnimator *animator){
-            animator.duration = .25f;
-        };
-    }
-    return _transitioningDelegate;
-}
-
-- (void)pan:(UIPanGestureRecognizer *)panGestureRecognizer {
-    switch (panGestureRecognizer.state) {
-        case UIGestureRecognizerStateBegan:
-            [self.transitioningDelegate beginInteractiveTransition];
-            [self.navigationController.topViewController popBack];
-            break;
-        case UIGestureRecognizerStateChanged:
-            [self.transitioningDelegate.interactiveTransition updateInteractiveTransition:[panGestureRecognizer translationInView:panGestureRecognizer.view].x / self.navigationController.view.bounds.size.width];
-            break;
-        case UIGestureRecognizerStateEnded:
-            if ([panGestureRecognizer translationInView:panGestureRecognizer.view].x > self.navigationController.view.bounds.size.width / 12.f &&
-                [panGestureRecognizer velocityInView:panGestureRecognizer.view].x    > self.navigationController.view.bounds.size.width / 8.f) {
-                // finish
-                [self.transitioningDelegate.interactiveTransition finishInteractiveTransition];
-                [self.transitioningDelegate endInteractiveTransition];
-                break;
-            }
-            // no break here
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateFailed:
-            // cancel
-            [self.transitioningDelegate.interactiveTransition cancelInteractiveTransition];
-            [self.transitioningDelegate endInteractiveTransition];
-            break;
-            
-        default:
-            break;
+- (void)setNavigationController:(UINavigationController *)navigationController {
+    _navigationController = navigationController;
+    [self.panGestureRecognizer removeTarget:nil action:nil];
+    NSArray *targets = [navigationController.interactivePopGestureRecognizer valueForKey:@"targets"];
+    id target = [[targets firstObject] valueForKey:@"target"];
+    SEL action = NSSelectorFromString(@"handleNavigationTransition:");
+    if ([target respondsToSelector:action]) {
+        [self.panGestureRecognizer addTarget:target action:action];
+    } else {
+        self.panGestureRecognizer.enabled = NO;
     }
 }
 
 #pragma mark UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if (self.transitioningDelegate.isTransitioning) return NO;
+    if (self.navigationController.viewControllers.count <= 1) return NO;
+    if ([[self.navigationController valueForKey:@"_isTransitioning"] boolValue]) return NO;
+    
     if (gestureRecognizer == self.panGestureRecognizer) {
         CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view];
-        return velocity.x > fabs(velocity.y);
+        if (velocity.x < fabs(velocity.y)) return NO;
     }
-    return YES;
+    
+    return [self.navigationController.topViewController shouldPopBack];
 }
 
 @end
@@ -189,14 +117,12 @@ static char TAG_VIEW_CONTROLLER_DISSMISS_BUTTON_ITEM_CREATED;
 
 + (void)load {
     [self swizzleInstanceSelector:@selector(willMoveToParentViewController:) toSelector:@selector(iuPopBack_UIViewController_willMoveToParentViewController:)];
+    [self swizzleInstanceSelector:@selector(viewDidLoad) toSelector:@selector(iuPopBack_UIViewController_viewDidLoad)];
 }
 
 - (void)iuPopBack_UIViewController_willMoveToParentViewController:(UIViewController *)parent {
     [self iuPopBack_UIViewController_willMoveToParentViewController:parent];
     if ([parent isKindOfClass:[UINavigationController class]]) {
-        
-        self.navigationItem.hidesBackButton = YES;
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
         NSMutableArray *items = [self.navigationItem.leftBarButtonItems ?: @[] mutableCopy];
         if ([[(UINavigationController *)parent viewControllers] firstObject] != self) {
@@ -218,6 +144,12 @@ static char TAG_VIEW_CONTROLLER_DISSMISS_BUTTON_ITEM_CREATED;
         }
         self.navigationItem.leftBarButtonItems = [items copy];
     }
+}
+
+- (void)iuPopBack_UIViewController_viewDidLoad {
+    [self iuPopBack_UIViewController_viewDidLoad];
+    self.navigationItem.hidesBackButton = YES;
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)setBackButtonItem:(UIBarButtonItem *)backButtonItem {
@@ -326,6 +258,10 @@ static char TAG_VIEW_CONTROLLER_DISSMISS_BUTTON_ITEM_CREATED;
 
 - (void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)shouldPopBack {
+    return YES;
 }
 
 @end

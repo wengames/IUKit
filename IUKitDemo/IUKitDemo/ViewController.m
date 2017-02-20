@@ -20,11 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = @"esdfsdf";
-//    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-    
-//    self.view.setBackgroundColor([UIColor blackColor]);
+    self.navigationItem.title = @"esdfsdf";
     
     [IURequestConfig globalConfig].enableRequestLog = YES;
     
@@ -41,7 +37,9 @@
     _v = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)].setBackgroundColor([UIColor blueColor]).intoView(self.view);
     _v.userInteractionEnabled = YES;
     [_v sd_setImageWithURL:[NSURL URLWithString:@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];
+//    self.navigationController.navigationBar
 //    [self registerPreviewingWithSourceView:_v];
+    
 }
 
 //- (UIViewController *)viewControllerForPreviewingWithSourceView:(UIView *)sourceView {
@@ -57,10 +55,6 @@
 
 - (NSArray *)magicViewsTransitionFromViewController:(UIViewController *)viewController {
     return @[_v];
-}
-
-- (BOOL)enableMagicViewsLiftDropWhenTransitionToViewController:(UIViewController *)viewController {
-    return NO;
 }
 
 - (NSArray *)magicViewsTransitionToViewController:(UIViewController *)viewController {

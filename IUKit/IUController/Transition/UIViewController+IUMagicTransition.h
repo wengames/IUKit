@@ -12,7 +12,5 @@
 
 - (NSArray *)magicViewsTransitionToViewController:(UIViewController *)viewController;
 - (NSArray *)magicViewsTransitionFromViewController:(UIViewController *)viewController;
-- (BOOL)enableMagicViewsLiftDropWhenTransitionToViewController:(UIViewController *)viewController;   // default is YES
-- (BOOL)enableMagicViewsLiftDropWhenTransitionFromViewController:(UIViewController *)viewController; // default is YES
 
 @end
