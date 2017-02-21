@@ -19,6 +19,7 @@
 #import "UIViewController+IUModalTransition.h"
 #import "IUFadeModalViewController.h"
 #import "IUBottomSheetViewController.h"
+#import "IUAlertPromptViewController.h"
 #import "IUImageBrowseViewController.h"
 #import "IUWebViewController.h"
 

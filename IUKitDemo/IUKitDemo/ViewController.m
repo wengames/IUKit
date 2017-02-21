@@ -60,6 +60,11 @@
 //}
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    IUBottomSheetViewController *vc = [[IUBottomSheetViewController alloc] init];
+    vc.contentView.setFrame(CGRectMake(0, 0, 100, 200)).setBackgroundColor([UIColor whiteColor]);
+    [self presentViewController:vc animated:YES completion:nil];
+    return;
+    
 //    [[IURouter router] open:@"ViewController"];
 //    [self.navigationController pushViewController:[[ViewController alloc] init] animated:YES];
     IUImageBrowseViewController *ib = [[IUImageBrowseViewController alloc] initWithUrls:@[@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg",@"http://pic1.5442.com:82/2015/0409/01/15.jpg%21960.jpg"]];

@@ -28,6 +28,7 @@
 		8424567F1E56B4C90022C648 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8424566F1E56B4C90022C648 /* UIView+WebCacheOperation.m */; };
 		842456821E56C69E0022C648 /* UIView+IUFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 842456811E56C69E0022C648 /* UIView+IUFrame.m */; };
 		842458F91E5BF7650022C648 /* IUDashLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 842458F81E5BF7650022C648 /* IUDashLineView.m */; };
+		8424594A1E5C63860022C648 /* IUAlertPromptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842459491E5C63860022C648 /* IUAlertPromptViewController.m */; };
 		843936981E5418F900D2B957 /* NSString+IUCharacterLength.m in Sources */ = {isa = PBXBuildFile; fileRef = 843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */; };
 		844397151E51BABF00EA8989 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397141E51BABF00EA8989 /* main.m */; };
 		844397181E51BABF00EA8989 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397171E51BABF00EA8989 /* AppDelegate.m */; };
@@ -192,6 +193,8 @@
 		842456811E56C69E0022C648 /* UIView+IUFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IUFrame.m"; sourceTree = "<group>"; };
 		842458F71E5BF7650022C648 /* IUDashLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUDashLineView.h; sourceTree = "<group>"; };
 		842458F81E5BF7650022C648 /* IUDashLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUDashLineView.m; sourceTree = "<group>"; };
+		842459481E5C63860022C648 /* IUAlertPromptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUAlertPromptViewController.h; sourceTree = "<group>"; };
+		842459491E5C63860022C648 /* IUAlertPromptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUAlertPromptViewController.m; sourceTree = "<group>"; };
 		843936961E5418F900D2B957 /* NSString+IUCharacterLength.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IUCharacterLength.h"; sourceTree = "<group>"; };
 		843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IUCharacterLength.m"; sourceTree = "<group>"; };
 		844397101E51BABF00EA8989 /* IUKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IUKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -755,6 +758,8 @@
 				84BAD4171E542456006EF1C8 /* UIViewController+IUContainView.m */,
 				84BAD4CD1E5452D9006EF1C8 /* IUBottomSheetViewController.h */,
 				84BAD4CE1E5452D9006EF1C8 /* IUBottomSheetViewController.m */,
+				842459481E5C63860022C648 /* IUAlertPromptViewController.h */,
+				842459491E5C63860022C648 /* IUAlertPromptViewController.m */,
 				84BAD4D01E5452F4006EF1C8 /* IUFadeModalViewController.h */,
 				84BAD4D11E5452F4006EF1C8 /* IUFadeModalViewController.m */,
 				8424564C1E56B3CA0022C648 /* IUImageBrowseViewController.h */,
@@ -1132,6 +1137,7 @@
 				8443989A1E529BCE00EA8989 /* MJProperty.m in Sources */,
 				8443989D1E529BCE00EA8989 /* NSObject+MJClass.m in Sources */,
 				844397C71E51CB9E00EA8989 /* IUTextInputRestrict.m in Sources */,
+				8424594A1E5C63860022C648 /* IUAlertPromptViewController.m in Sources */,
 				844397BA1E51C02F00EA8989 /* UIView+IUChain.m in Sources */,
 				8424567E1E56B4C90022C648 /* UIImageView+WebCache.m in Sources */,
 				8443983B1E51CF2F00EA8989 /* UIButton+IUColor.m in Sources */,

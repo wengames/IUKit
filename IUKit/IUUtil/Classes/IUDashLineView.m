@@ -35,6 +35,13 @@
     return view;
 }
 
+- (instancetype)init {
+    if (self = [super init]) {
+        self.userInteractionEnabled = NO;
+    }
+    return self;
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self reloadDashLine];

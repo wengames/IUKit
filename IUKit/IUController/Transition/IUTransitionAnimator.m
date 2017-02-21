@@ -104,6 +104,11 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
             case IUTransitionOperationPush:
             case IUTransitionOperationPresent:
             {
+                prepare = ^{
+                    prepare();
+                    dimmerBackgroundView.alpha = 0.0;
+                    [containerView insertSubview:dimmerBackgroundView belowSubview:toViewController.view];
+                };
                 animations = ^{
                     animations();
                     dimmerBackgroundView.alpha = 1.0;
@@ -113,6 +118,11 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
             case IUTransitionOperationPop:
             case IUTransitionOperationDismiss:
             {
+                prepare = ^{
+                    prepare();
+                    dimmerBackgroundView.alpha = 1.0;
+                    [containerView insertSubview:dimmerBackgroundView belowSubview:fromViewController.view];
+                };
                 animations = ^{
                     animations();
                     dimmerBackgroundView.alpha = 0.0;

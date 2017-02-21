@@ -1,14 +1,14 @@
 //
-//  IUBottomSheetViewController.h
+//  IUAlertPromptViewController.h
 //  IUKitDemo
 //
-//  Created by admin on 2017/2/15.
+//  Created by admin on 2017/2/21.
 //  Copyright © 2017年 刘海文. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface IUBottomSheetViewController : UIViewController
+@interface IUAlertPromptViewController : UIViewController
 
 @property (nonatomic, strong, readonly) UIView *contentView;
 
