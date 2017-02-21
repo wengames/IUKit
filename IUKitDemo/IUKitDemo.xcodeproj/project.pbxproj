@@ -27,6 +27,7 @@
 		8424567E1E56B4C90022C648 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8424566D1E56B4C90022C648 /* UIImageView+WebCache.m */; };
 		8424567F1E56B4C90022C648 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8424566F1E56B4C90022C648 /* UIView+WebCacheOperation.m */; };
 		842456821E56C69E0022C648 /* UIView+IUFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 842456811E56C69E0022C648 /* UIView+IUFrame.m */; };
+		842458F91E5BF7650022C648 /* IUDashLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 842458F81E5BF7650022C648 /* IUDashLineView.m */; };
 		843936981E5418F900D2B957 /* NSString+IUCharacterLength.m in Sources */ = {isa = PBXBuildFile; fileRef = 843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */; };
 		844397151E51BABF00EA8989 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397141E51BABF00EA8989 /* main.m */; };
 		844397181E51BABF00EA8989 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 844397171E51BABF00EA8989 /* AppDelegate.m */; };
@@ -189,6 +190,8 @@
 		8424566F1E56B4C90022C648 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		842456801E56C69E0022C648 /* UIView+IUFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+IUFrame.h"; sourceTree = "<group>"; };
 		842456811E56C69E0022C648 /* UIView+IUFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IUFrame.m"; sourceTree = "<group>"; };
+		842458F71E5BF7650022C648 /* IUDashLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUDashLineView.h; sourceTree = "<group>"; };
+		842458F81E5BF7650022C648 /* IUDashLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUDashLineView.m; sourceTree = "<group>"; };
 		843936961E5418F900D2B957 /* NSString+IUCharacterLength.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IUCharacterLength.h"; sourceTree = "<group>"; };
 		843936971E5418F900D2B957 /* NSString+IUCharacterLength.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IUCharacterLength.m"; sourceTree = "<group>"; };
 		844397101E51BABF00EA8989 /* IUKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IUKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -848,6 +851,8 @@
 				844398331E51CF2F00EA8989 /* IUTabPageView.m */,
 				844398341E51CF2F00EA8989 /* IUTabPageViewController.h */,
 				844398351E51CF2F00EA8989 /* IUTabPageViewController.m */,
+				842458F71E5BF7650022C648 /* IUDashLineView.h */,
+				842458F81E5BF7650022C648 /* IUDashLineView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1062,6 +1067,7 @@
 				844397AB1E51C02F00EA8989 /* UIGestureRecognizer+IUChain.m in Sources */,
 				844398C11E53E83900EA8989 /* NSNull+IUProtect.m in Sources */,
 				844398001E51CC0000EA8989 /* UIViewController+IUStatusBarStyle.m in Sources */,
+				842458F91E5BF7650022C648 /* IUDashLineView.m in Sources */,
 				844398061E51CC0000EA8989 /* UIViewController+IUPreviewing.m in Sources */,
 				844397B41E51C02F00EA8989 /* UISlider+IUChain.m in Sources */,
 				844398441E51CF2F00EA8989 /* IUTabPageView.m in Sources */,

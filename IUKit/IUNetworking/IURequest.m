@@ -198,68 +198,68 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(config.fakeRequestDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             success(nil, nil);
         });
-    }
-    
-    switch (config.methodName) {
-        case IUNetworkingRequestMethodName_GET:
-        {
-            self.task = [sessionManager GET:[config absoluteUrl]
-                                 parameters:[config parameters]
-                                   progress:[config downloadProgress]
-                                    success:success
-                                    failure:failure];
-        }   break;
-        case IUNetworkingRequestMethodName_POST:
-        {
-            self.task = [sessionManager POST:[config absoluteUrl]
-                                  parameters:[config parameters]
-                                    progress:[config uploadProgress]
-                                     success:success
-                                     failure:failure];
-        }   break;
-        case IUNetworkingRequestMethodName_PUT:
-        {
-            self.task = [sessionManager PUT:[config absoluteUrl]
-                                 parameters:[config parameters]
-                                    success:success
-                                    failure:failure];
-        }   break;
-        case IUNetworkingRequestMethodName_DELETE:
-        {
-            self.task = [sessionManager DELETE:[config absoluteUrl]
-                                    parameters:[config parameters]
-                                       success:success
-                                       failure:failure];
-        }   break;
-        case IUNetworkingRequestMethodName_HEAD:
-        {
-            self.task = [sessionManager HEAD:[config absoluteUrl]
-                                  parameters:[config parameters]
-                                     success:^(NSURLSessionDataTask * _Nonnull task) {
-                                         success(task, nil);
-                                     } failure:failure];
-        }   break;
-        case IUNetworkingRequestMethodName_FORM_DATA:
-        {
-            void(^block)(id<AFMultipartFormData>) = ^(id<AFMultipartFormData>  _Nonnull formData) {
-                [config.files enumerateObjectsUsingBlock:^(IURequestUploadFile * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    [formData appendPartWithFileData:obj.data
-                                                name:obj.name
-                                            fileName:obj.fileName
-                                            mimeType:obj.mimeType];
-                }];
-            };
-            self.task = [sessionManager POST:[config absoluteUrl]
-                                  parameters:[config parameters]
-                   constructingBodyWithBlock:block
-                                    progress:[config uploadProgress]
-                                     success:success
-                                     failure:failure];
-        }   break;
-        default:
-            self.task = nil;
-            comletion();
-            break;
+    } else {
+        switch (config.methodName) {
+            case IUNetworkingRequestMethodName_GET:
+            {
+                self.task = [sessionManager GET:[config absoluteUrl]
+                                     parameters:[config parameters]
+                                       progress:[config downloadProgress]
+                                        success:success
+                                        failure:failure];
+            }   break;
+            case IUNetworkingRequestMethodName_POST:
+            {
+                self.task = [sessionManager POST:[config absoluteUrl]
+                                      parameters:[config parameters]
+                                        progress:[config uploadProgress]
+                                         success:success
+                                         failure:failure];
+            }   break;
+            case IUNetworkingRequestMethodName_PUT:
+            {
+                self.task = [sessionManager PUT:[config absoluteUrl]
+                                     parameters:[config parameters]
+                                        success:success
+                                        failure:failure];
+            }   break;
+            case IUNetworkingRequestMethodName_DELETE:
+            {
+                self.task = [sessionManager DELETE:[config absoluteUrl]
+                                        parameters:[config parameters]
+                                           success:success
+                                           failure:failure];
+            }   break;
+            case IUNetworkingRequestMethodName_HEAD:
+            {
+                self.task = [sessionManager HEAD:[config absoluteUrl]
+                                      parameters:[config parameters]
+                                         success:^(NSURLSessionDataTask * _Nonnull task) {
+                                             success(task, nil);
+                                         } failure:failure];
+            }   break;
+            case IUNetworkingRequestMethodName_FORM_DATA:
+            {
+                void(^block)(id<AFMultipartFormData>) = ^(id<AFMultipartFormData>  _Nonnull formData) {
+                    [config.files enumerateObjectsUsingBlock:^(IURequestUploadFile * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        [formData appendPartWithFileData:obj.data
+                                                    name:obj.name
+                                                fileName:obj.fileName
+                                                mimeType:obj.mimeType];
+                    }];
+                };
+                self.task = [sessionManager POST:[config absoluteUrl]
+                                      parameters:[config parameters]
+                       constructingBodyWithBlock:block
+                                        progress:[config uploadProgress]
+                                         success:success
+                                         failure:failure];
+            }   break;
+            default:
+                self.task = nil;
+                comletion();
+                break;
+        }
     }
 }
 

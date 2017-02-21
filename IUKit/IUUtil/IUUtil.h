@@ -40,6 +40,7 @@
 #import "IUScreenSizeAdaptor.h"
 #import "IUCollectionViewSpringFlowLayout.h"
 #import "IUForceTouchGestureRecognizer.h"
+#import "IUDashLineView.h"
 #import "IUTabPageView.h"
 #import "IUTabPageViewController.h"
 

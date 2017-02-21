@@ -23,7 +23,9 @@ static char TAG_BOTTOM_REFRESH_VIEW;
 #define IUScrollViewRefreshViewCompleteWaitDuration      1
 
 @interface IUScrollViewRefreshView ()
-
+{
+    NSDate *_lastCompleteDate;
+}
 @property (nonatomic, readonly)   UIScrollView *scrollView;
 @property (nonatomic)             CGFloat  inset;
 @property (nonatomic)             IUScrollViewRefreshState    state;
@@ -352,7 +354,7 @@ static char TAG_BOTTOM_REFRESH_VIEW;
             // do nothing
             break;
         case IUScrollViewRefreshStateComplete:
-            self.state = IUScrollViewRefreshStateNormal;
+            if (offset <= 0) self.state = IUScrollViewRefreshStateNormal;
             break;
             
         default:
@@ -425,6 +427,7 @@ static char TAG_BOTTOM_REFRESH_VIEW;
             break;
         case IUScrollViewRefreshStateComplete:
         {
+            _lastCompleteDate = [NSDate date];
             if ([self.loadingView respondsToSelector:@selector(stopAnimating)]) [self.loadingView stopAnimating];
             
             if (self.refreshImmediately) {
@@ -449,11 +452,13 @@ static int _resettingCount = 0;
         [self.scrollView resetContentInset];
         _resettingCount--;  //解除屏蔽
     }
-    [self performSelector:@selector(resetLoadingView) withObject:nil afterDelay:IUScrollViewRefreshViewCompleteAnimationDuration inModes:@[NSRunLoopCommonModes]];
+    [self performSelector:@selector(resetLoadingViewByDate:) withObject:[NSDate date] afterDelay:IUScrollViewRefreshViewCompleteAnimationDuration inModes:@[NSRunLoopCommonModes]];
 }
 
-- (void)resetLoadingView {
-    if ([self.loadingView respondsToSelector:@selector(setComplete:)]) [self.loadingView setComplete:NO];
+- (void)resetLoadingViewByDate:(NSDate *)date {
+    if (_lastCompleteDate == nil || [date compare:_lastCompleteDate] == NSOrderedDescending) {
+        if ([self.loadingView respondsToSelector:@selector(setComplete:)]) [self.loadingView setComplete:NO];
+    }
 }
 
 - (void)resetInset {

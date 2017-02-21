@@ -27,9 +27,6 @@
         UIView *containerView = context.containerView;
         UIViewController *fromViewController = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
         UIViewController *toViewController   = [context viewControllerForKey:UITransitionContextToViewControllerKey];
-        
-        NSLog(@"%@", fromViewController.view);
-        NSLog(@"%@", toViewController.view);
 
         NSArray <UIView *> *fromMagicViews = [fromViewController magicViewsTransitionToViewController:toViewController];
         NSArray <UIView *> *toMagicViews = [toViewController magicViewsTransitionFromViewController:fromViewController];
