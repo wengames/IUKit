@@ -88,14 +88,10 @@
     self.collectionView.alpha = 0;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    self.collectionView.alpha = 1;
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     _shouldRotate = YES;
+    self.collectionView.alpha = 1;
 }
 
 - (void)viewDidLayoutSubviews {

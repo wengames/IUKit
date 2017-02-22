@@ -43,16 +43,6 @@
     } completion:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [self.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.contentView.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, self.contentView.bounds.size.height);
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.contentView.frame = CGRectMake(0, self.view.bounds.size.height - self.contentView.bounds.size.height, self.view.bounds.size.width, self.contentView.bounds.size.height);
-    }];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
