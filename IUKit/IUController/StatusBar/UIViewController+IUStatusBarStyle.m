@@ -13,7 +13,7 @@
 - (UIStatusBarStyle)preferredStatusBarStyle {
     CGFloat w = 0;
     [[self statusBarBackgroundColor] getWhite:&w alpha:nil];
-    return w > 0.7 ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+    return w > 0.72 ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {

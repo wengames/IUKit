@@ -14,14 +14,17 @@
 @interface IUImageBrowseViewController : IUFadeModalViewController
 
 @property (nonatomic, assign) CGFloat spacingBetweenImage; // default is 15;
-
 @property (nonatomic) NSInteger currentIndex;
+
+@property (nonatomic, strong, readonly) UICollectionView *collectionView;
+@property (nonatomic, strong, readonly) UIPageControl *pageControl;
 
 - (instancetype)initWithDelegate:(id<IUImageBrowseViewControllerDelegate>)delegate;
 - (instancetype)initWithObjects:(NSArray <IUImageBrowseObject *> *)objects;
 - (instancetype)initWithImages:(NSArray <UIImage *> *)images;
 - (instancetype)initWithUrls:(NSArray <NSString *> *)urls;
 
+- (void)didLongPressObject:(IUImageBrowseObject *)object atIndex:(NSInteger)index; // override point
 - (void)reloadData;
 
 @end

@@ -27,6 +27,7 @@
 @property (nonatomic, strong) IUImageBrowseObject *object;
 
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, weak)   IUImageBrowseViewController *viewController;
 
 @end
@@ -38,13 +39,13 @@
 @property (nonatomic, weak)   id<IUImageBrowseViewControllerDelegate> browserDelegate;
 @property (nonatomic, strong) NSArray <IUImageBrowseObject *> *objects;
 
-@property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) UIPageControl    *pageControl;
 @property (nonatomic, strong) UITapGestureRecognizer *dismissGestureRecognizer;
 
 @end
 
 @implementation IUImageBrowseViewController
+
+@synthesize collectionView = _collectionView, pageControl = _pageControl;
 
 - (instancetype)initWithDelegate:(id<IUImageBrowseViewControllerDelegate>)delegate {
     if (self = [self init]) {
@@ -119,6 +120,14 @@
 
 - (NSInteger)currentIndex {
     return self.pageControl.currentPage;
+}
+
+- (void)_didLongPressCell:(_IUImageBrowserCollectionViewCell *)cell {
+    [self didLongPressObject:cell.object atIndex:[self.collectionView indexPathForCell:cell].item];
+}
+
+- (void)didLongPressObject:(IUImageBrowseObject *)object atIndex:(NSInteger)index {
+    
 }
 
 - (void)reloadData {
@@ -350,10 +359,17 @@
     return _panGestureRecognizer;
 }
 
+- (UILongPressGestureRecognizer *)longPressGestureRecognizer {
+    if (_longPressGestureRecognizer == nil) {
+        _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    }
+    return _longPressGestureRecognizer;
+}
+
 - (UIImageView *)imageView {
     if (_imageView == nil) {
         _imageView = [[UIImageView alloc] init];
-        _imageView.backgroundColor = [UIColor redColor];
+        _imageView.contentMode = UIViewContentModeScaleAspectFit;
         _imageView.userInteractionEnabled = YES;
         [_imageView addGestureRecognizer:self.doubleTapGestureRecognizer];
         [_imageView addGestureRecognizer:self.panGestureRecognizer];
@@ -363,6 +379,16 @@
 }
 
 #pragma mark - Zoom methods
+- (void)handleLongPress:(UILongPressGestureRecognizer *)longPressGestureRecognizer {
+    switch (longPressGestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            [self.viewController _didLongPressCell:self];
+            break;
+            
+        default:
+            break;
+    }
+}
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer {
     if (self.scrollView.zoomScale != 1) {
         [self.scrollView setZoomScale:1 animated:YES];
