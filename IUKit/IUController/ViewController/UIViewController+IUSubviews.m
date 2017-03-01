@@ -79,10 +79,10 @@ static char TAG_VIEW_CONTROLLER_COLLECTION_VIEW;
         tableView.showsVerticalScrollIndicator = NO;
         tableView.showsHorizontalScrollIndicator = NO;
         tableView.backgroundColor = self.view.backgroundColor;
+        tableView.frame = self.view.bounds;
         tableView.dataSource = self;
         tableView.delegate = self;
         tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        tableView.frame = self.view.bounds;
         [self.view addSubview:tableView];
         self.keyboardFittingScrollView = tableView;
     }
@@ -118,10 +118,10 @@ static char TAG_VIEW_CONTROLLER_COLLECTION_VIEW;
         collectionView.showsVerticalScrollIndicator = NO;
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.backgroundColor = self.view.backgroundColor;
+        collectionView.frame = self.view.bounds;
         collectionView.dataSource = self;
         collectionView.delegate = self;
         collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        collectionView.frame = self.view.bounds;
         [self.view addSubview:collectionView];
         self.keyboardFittingScrollView = collectionView;
     }

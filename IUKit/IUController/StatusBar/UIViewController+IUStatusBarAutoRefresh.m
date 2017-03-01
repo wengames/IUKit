@@ -15,6 +15,7 @@
 + (void)load {
     [self swizzleInstanceSelector:@selector(viewDidLayoutSubviews) toSelector:@selector(iuStatusBarAutoRefresh_UIViewController_viewDidLayoutSubviews)];
     [self swizzleInstanceSelector:@selector(viewDidAppear:) toSelector:@selector(iuStatusBarAutoRefresh_UIViewController_viewDidAppear:)];
+    [self swizzleInstanceSelector:@selector(viewDidDisappear:) toSelector:@selector(iuStatusBarAutoRefresh_UIViewController_viewDidDisappear:)];
 }
 
 - (void)iuStatusBarAutoRefresh_UIViewController_viewDidLayoutSubviews {
@@ -25,6 +26,11 @@
 - (void)iuStatusBarAutoRefresh_UIViewController_viewDidAppear:(BOOL)animated {
     [self iuStatusBarAutoRefresh_UIViewController_viewDidAppear:animated];
     [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)iuStatusBarAutoRefresh_UIViewController_viewDidDisappear:(BOOL)animated {
+    [self iuStatusBarAutoRefresh_UIViewController_viewDidDisappear:animated];
+    [[UIApplication sharedApplication].keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
 @end

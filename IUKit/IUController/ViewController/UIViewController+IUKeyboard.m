@@ -152,6 +152,11 @@ static char TAG_ORIGIN_FRAME;
 #pragma mark - Keyboard Observer Method
 - (void)_editingViewChanged:(NSNotification *)notification {
     self._editingView = [self ownView:notification.object] ? notification.object : nil;
+    if (self._editingView) {
+        [(self.keyboardFittingScrollView ?: self.view) addGestureRecognizer:self.hideKeyboardTapGestureRecognizer];
+    } else {
+        [(self.keyboardFittingScrollView ?: self.view) removeGestureRecognizer:self.hideKeyboardTapGestureRecognizer];
+    }
 }
 
 // 键盘出现, 保存底视图frame, 根据底视图类型, 滚动或移动底视图避让键盘
@@ -159,7 +164,6 @@ static char TAG_ORIGIN_FRAME;
     if (self._isKeyboardVisible) return;
     self._isKeyboardVisible = YES;
     
-    [(self.keyboardFittingScrollView ?: self.view) addGestureRecognizer:self.hideKeyboardTapGestureRecognizer];
     self._originFrame = self.view.frame;
     
     self.keyboardHeight = [[notification userInfo][UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
@@ -182,7 +186,6 @@ static char TAG_ORIGIN_FRAME;
     if (!self._isKeyboardVisible) return;
     self._isKeyboardVisible = NO;
     
-    [(self.keyboardFittingScrollView ?: self.view) removeGestureRecognizer:self.hideKeyboardTapGestureRecognizer];
     self.keyboardHeight = 0;
     self.view.frame = self._originFrame;
     self._editingView = nil;

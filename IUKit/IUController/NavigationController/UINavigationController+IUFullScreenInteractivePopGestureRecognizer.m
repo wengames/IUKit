@@ -237,7 +237,7 @@ static char TAG_VIEW_CONTROLLER_DISSMISS_BUTTON_ITEM_CREATED;
         UIColor *highlightedColor = [UIColor colorWithRed:r green:g blue:b alpha:a];
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.titleLabel.font = [UIFont systemFontOfSize:14];
+        button.titleLabel.font = [UIFont systemFontOfSize:16];
         [button setTitleColor:color forState:UIControlStateNormal];
         [button setTitleColor:highlightedColor forState:UIControlStateHighlighted];
         [button setTitle:@"取消" forState:UIControlStateNormal];

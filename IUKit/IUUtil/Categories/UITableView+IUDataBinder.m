@@ -209,6 +209,12 @@ static char TAG_TABLE_VIEW_DATA_BINDER;
         [self.delegate tableView:tableView didSelectRowAtIndexPath:indexPath];
     } else {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        if ([self.delegate respondsToSelector:@selector(tableView:viewControllerToPreviewAtIndexPath:)]) {
+            UIViewController *viewController = [self.delegate tableView:self.tableView viewControllerToPreviewAtIndexPath:indexPath];
+            if (viewController) {
+                [self.tableView.viewController.navigationController pushViewController:viewController animated:YES];
+            }
+        }
     }
 }
 

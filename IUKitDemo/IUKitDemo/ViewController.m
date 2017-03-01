@@ -13,6 +13,7 @@
 @interface ViewController ()
 {
     UIImageView *_v;
+    UISearchController *_s;
 }
 @end
 
@@ -21,6 +22,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"esdfsdf";
+    
+    _s = [[UISearchController alloc] initWithSearchResultsController:nil];
+    [self.view addSubview:_s.searchBar];
     
     [IURequestConfig globalConfig].enableRequestLog = YES;
     
