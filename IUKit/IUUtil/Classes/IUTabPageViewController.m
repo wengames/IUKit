@@ -24,6 +24,42 @@ static char TAG_TAB_BADGE_LABEL;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    @try {
+        for (UICollectionViewCell *cell in [self.tabPageView.pageCollectionView visibleCells]) {
+            [self.viewControllers[[self.tabPageView.pageCollectionView indexPathForCell:cell].item] viewWillAppear:NO];
+        }
+    } @catch (NSException *exception) {}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    @try {
+        for (UICollectionViewCell *cell in [self.tabPageView.pageCollectionView visibleCells]) {
+            [self.viewControllers[[self.tabPageView.pageCollectionView indexPathForCell:cell].item] viewDidAppear:NO];
+        }
+    } @catch (NSException *exception) {}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    @try {
+        for (UICollectionViewCell *cell in [self.tabPageView.pageCollectionView visibleCells]) {
+            [self.viewControllers[[self.tabPageView.pageCollectionView indexPathForCell:cell].item] viewWillDisappear:NO];
+        }
+    } @catch (NSException *exception) {}
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    @try {
+        for (UICollectionViewCell *cell in [self.tabPageView.pageCollectionView visibleCells]) {
+            [self.viewControllers[[self.tabPageView.pageCollectionView indexPathForCell:cell].item] viewDidDisappear:NO];
+        }
+    } @catch (NSException *exception) {}
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -32,7 +68,13 @@ static char TAG_TAB_BADGE_LABEL;
 }
 
 - (void)setViewControllers:(NSArray<UIViewController *> *)viewControllers {
+    for (UIViewController *viewController in _viewControllers) {
+        [viewController removeFromParentViewController];
+    }
     _viewControllers = viewControllers;
+    for (UIViewController *viewController in _viewControllers) {
+        [self addChildViewController:viewController];
+    }
     [self.tabPageView reloadTabsAndPages];
 }
 

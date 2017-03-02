@@ -15,7 +15,11 @@
 @property (nonatomic, assign) NSUInteger maxTextLength;
 @property (nonatomic, assign) NSUInteger maxCharacterLength;
 - (void)_textDidChange:(id<UITextInput>)textInput;
+- (void)_textViewDidChange:(NSNotification *)notification;
+@end
 
+@interface _IUTextViewPlaceHolderLabel : UILabel
+- (void)_textViewDidChange:(NSNotification *)notification;
 @end
 
 @interface UITextView ()
@@ -57,12 +61,14 @@ static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
 - (UILabel *)__placeholderLabel {
     UILabel *placeholderLabel = objc_getAssociatedObject(self, &TAG_TEXT_VIEW_PLACEHOLDER_LABEL);
     if (placeholderLabel == nil) {
-        placeholderLabel = [[UILabel alloc] init];
+        placeholderLabel = [[_IUTextViewPlaceHolderLabel alloc] init];
         placeholderLabel.numberOfLines = 0;
         placeholderLabel.font = self.font ?: [UIFont systemFontOfSize:12];
         placeholderLabel.textColor = [UIColor lightGrayColor];
         objc_setAssociatedObject(self, &TAG_TEXT_VIEW_PLACEHOLDER_LABEL, placeholderLabel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self addSubview:placeholderLabel];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:placeholderLabel selector:@selector(_textViewDidChange:) name:UITextViewTextDidChangeNotification object:self];
     }
     return placeholderLabel;
 }
@@ -109,7 +115,7 @@ static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
     textInputRestrict.maxTextLength = self.maxTextLength;
     textInputRestrict.maxCharacterLength = self.maxCharacterLength;
 
-    [[NSNotificationCenter defaultCenter] addObserver:textInputRestrict selector:@selector(textViewDidChange:) name:UITextViewTextDidChangeNotification object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:textInputRestrict selector:@selector(_textViewDidChange:) name:UITextViewTextDidChangeNotification object:self];
 }
 
 - (IUTextInputRestrict *)textInputRestrict {
@@ -166,3 +172,15 @@ static char TAG_TEXT_VIEW_PLACEHOLDER_LABEL;
 
 @end
 #pragma clang diagnostic pop
+
+@implementation _IUTextViewPlaceHolderLabel
+
+- (void)_textViewDidChange:(NSNotification *)notification {
+    self.hidden = [(UITextView *)notification.object text].length != 0;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
+}
+
+@end

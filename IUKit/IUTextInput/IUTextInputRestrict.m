@@ -30,6 +30,10 @@
     return self;
 }
 
+- (void)_textViewDidChange:(NSNotification *)notification {
+    [self _textDidChange:notification.object];
+}
+
 - (void)_textDidChange:(UITextField *)textField {
     if (textField.markedTextRange) return;
     // get text
