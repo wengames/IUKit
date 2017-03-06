@@ -39,7 +39,7 @@
 @property (nonatomic, weak)   id<IUImageBrowseViewControllerDelegate> browserDelegate;
 @property (nonatomic, strong) NSArray <IUImageBrowseObject *> *objects;
 
-@property (nonatomic, strong) UITapGestureRecognizer *dismissGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *singleTapGestureRecognizer;
 
 @end
 
@@ -127,7 +127,20 @@
 }
 
 - (void)didLongPressObject:(IUImageBrowseObject *)object atIndex:(NSInteger)index {
-    
+    // override point
+}
+
+- (void)_didSingleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
+    NSInteger index = [self.collectionView indexPathForItemAtPoint:[self.collectionView convertPoint:[tapGestureRecognizer locationInView:self.view] fromView:self.view]].item;
+    [self didSingleTapObject:[self objectAtIndex:index] atIndex:index];
+}
+
+- (void)didSingleTapObject:(IUImageBrowseObject *)object atIndex:(NSInteger)index {
+    [self dismiss];
+}
+
+- (BOOL)canDismissByPanning {
+    return YES;
 }
 
 - (void)reloadData {
@@ -154,7 +167,7 @@
         [self.view insertSubview:_collectionView belowSubview:self.pageControl];
         [_collectionView layoutIfNeeded];
         
-        [_collectionView addGestureRecognizer:self.dismissGestureRecognizer];
+        [_collectionView addGestureRecognizer:self.singleTapGestureRecognizer];
     }
     return _collectionView;
 }
@@ -173,11 +186,11 @@
     return _pageControl;
 }
 
-- (UITapGestureRecognizer *)dismissGestureRecognizer {
-    if (_dismissGestureRecognizer == nil) {
-        _dismissGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+- (UITapGestureRecognizer *)singleTapGestureRecognizer {
+    if (_singleTapGestureRecognizer == nil) {
+        _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_didSingleTap:)];
     }
-    return _dismissGestureRecognizer;
+    return _singleTapGestureRecognizer;
 }
 
 #pragma mark UICollectionViewDelegate
@@ -188,7 +201,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     _IUImageBrowserCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.spacing = self.spacingBetweenImage;
-    [self.dismissGestureRecognizer requireGestureRecognizerToFail:cell.doubleTapGestureRecognizer];
+    [self.singleTapGestureRecognizer requireGestureRecognizerToFail:cell.doubleTapGestureRecognizer];
     cell.object = [self objectAtIndex:indexPath.item];
     return cell;
 }
@@ -515,6 +528,7 @@
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer == self.panGestureRecognizer) {
+        if (![self.viewController canDismissByPanning]) return NO;
         if ([UIApplication sharedApplication].statusBarOrientation != UIInterfaceOrientationPortrait) return NO;
         CGPoint velocity = [self.panGestureRecognizer velocityInView:self.panGestureRecognizer.view];
         return velocity.y > fabs(velocity.x);

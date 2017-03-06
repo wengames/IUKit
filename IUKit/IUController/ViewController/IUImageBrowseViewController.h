@@ -24,9 +24,11 @@
 - (instancetype)initWithImages:(NSArray <UIImage *> *)images;
 - (instancetype)initWithUrls:(NSArray <NSString *> *)urls;
 
-- (void)didLongPressObject:(IUImageBrowseObject *)object atIndex:(NSInteger)index; // override point
-- (void)reloadData;
+- (void)didLongPressObject:(IUImageBrowseObject *)object atIndex:(NSInteger)index; // override point, defaults do nothing
+- (void)didSingleTapObject:(IUImageBrowseObject *)object atIndex:(NSInteger)index; // override point, defaults do dismiss
+- (BOOL)canDismissByPanning; // override point
 
+- (void)reloadData;
 @end
 
 @protocol IUImageBrowseViewControllerDelegate <NSObject>

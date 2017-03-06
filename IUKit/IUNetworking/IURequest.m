@@ -51,14 +51,14 @@
 }
 
 + (instancetype)request:(IUNetworkingConfiguration)configuration {
-    IURequest *request = [[IURequest alloc] init];
+    IURequest *request = [[self alloc] init];
     configuration(request.config);
     [request start];
     return request;
 }
 
 + (instancetype)requestWithConfig:(IURequestConfig *)config {
-    IURequest *request = [[IURequest alloc] init];
+    IURequest *request = [[self alloc] init];
     request->_config = config;
     [request start];
     return request;
