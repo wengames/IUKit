@@ -23,35 +23,8 @@
 
 @implementation ViewController
 
-- (void)update {
-    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        _v1.transform = _transform;
-    } completion:nil];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _v1 = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setBackgroundColor([UIColor redColor]).intoView(self.view);
-    
-    _motionManager = [[CMMotionManager alloc] init];
-    _motionManager.accelerometerUpdateInterval = 0.05;
-    [_motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData * _Nullable accelerometerData, NSError * _Nullable error) {
-//        double d = sqrt(accelerometerData.acceleration.x * accelerometerData.acceleration.x + accelerometerData.acceleration.y + accelerometerData.acceleration.y);
-        double x = accelerometerData.acceleration.x;
-        double y = accelerometerData.acceleration.y;
-        double z = accelerometerData.acceleration.z;
-        _transform = CGAffineTransformMakeTranslation(-x * 100, y *100);
-
-//        double rotation = atan2(accelerometerData.acceleration.x, accelerometerData.acceleration.y) - M_PI;
-//        _transform = CGAffineTransformMakeRotation(rotation);
-        NSLog(@"%.4f, %.4f, %.4f", x, y, z);
-    }];
-    
-    CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(update)];
-    [link addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-    
-    return;
     
     self.navigationItem.title = @"esdfsdf";
     
@@ -89,6 +62,8 @@
         } completion:nil];
     });
     
+    [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor redColor];
+    [self.navigationController.view addSubview:[[UITextView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)]];
 }
 
 //- (UIViewController *)viewControllerForPreviewingWithSourceView:(UIView *)sourceView {

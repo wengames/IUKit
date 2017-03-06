@@ -24,13 +24,7 @@ static char TAG_VIEW_CONTROLLER_COLLECTION_VIEW;
 @implementation UIViewController (IUSubviews)
 
 + (void)load {
-    [self swizzleInstanceSelector:@selector(loadView) toSelector:@selector(iuSubviews_UIViewController_loadView)];
     [self swizzleInstanceSelector:@selector(viewDidLoad) toSelector:@selector(iuSubviews_UIViewController_viewDidLoad)];
-}
-
-- (void)iuSubviews_UIViewController_loadView {
-    [self iuSubviews_UIViewController_loadView];
-    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)iuSubviews_UIViewController_viewDidLoad {
