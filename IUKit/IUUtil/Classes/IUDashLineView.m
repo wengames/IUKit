@@ -22,10 +22,10 @@
     return [self dashLineWithColor:nil];
 }
 + (instancetype)dashLineWithColor:(UIColor *)color {
-    return [self dashLineWithColor:nil pattern:nil];
+    return [self dashLineWithColor:color pattern:nil];
 }
 + (instancetype)dashLineWithColor:(UIColor *)color pattern:(NSArray *)pattern {
-    return [self dashLineWithDirection:IUDashLineViewDirectionHorizontal color:nil pattern:nil];
+    return [self dashLineWithDirection:IUDashLineViewDirectionHorizontal color:color pattern:pattern];
 }
 + (instancetype)dashLineWithDirection:(IUDashLineViewDirection)direction color:(UIColor *)color pattern:(NSArray *)pattern {
     IUDashLineView *view = [[self alloc] init];

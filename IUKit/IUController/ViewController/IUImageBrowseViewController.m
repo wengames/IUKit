@@ -373,6 +373,7 @@
         _imageView.userInteractionEnabled = YES;
         [_imageView addGestureRecognizer:self.doubleTapGestureRecognizer];
         [_imageView addGestureRecognizer:self.panGestureRecognizer];
+        [_imageView addGestureRecognizer:self.longPressGestureRecognizer];
         [self.scrollView addSubview:_imageView];
     }
     return _imageView;
