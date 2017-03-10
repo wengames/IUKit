@@ -10,17 +10,31 @@
 #import "IURequestConfig.h"
 #import "IURequestResult.h"
 
+typedef enum {
+    IURequestTaskStateUnknown   = -1, // has not started
+    IURequestTaskStateRunning   = NSURLSessionTaskStateRunning,
+    IURequestTaskStateSuspended = NSURLSessionTaskStateSuspended,
+    IURequestTaskStateCanceling = NSURLSessionTaskStateCanceling,
+    IURequestTaskStateCompleted = NSURLSessionTaskStateCompleted
+} IURequestTaskState;
+
 typedef void(^IUNetworkingConfiguration)(IURequestConfig *config);
 
 @interface IURequest : NSObject
 
 @property (nonatomic, strong, readonly) IURequestConfig *config;
 @property (nonatomic, strong, readonly) IURequestResult *result;
+@property (nonatomic, readonly)      IURequestTaskState  state;
 
 /**
  *  start request, and cancel task before
  */
 - (void)start;
+
+/**
+ *  start request except state is IURequestTaskStateRunning
+ */
+- (void)startIfNeeded;
 
 /**
  *  cancel request

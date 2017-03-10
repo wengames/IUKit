@@ -43,6 +43,13 @@
     [self cancel];
 }
 
+- (IURequestTaskState)state {
+    if (self.task) {
+        return (IURequestTaskState)self.task.state;
+    }
+    return IURequestTaskStateUnknown;
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         self->_config = [IURequestConfig config];
@@ -96,6 +103,10 @@
     return [self upload:api parameters:nil files:files success:success];
 }
 
+- (void)startIfNeeded {
+    if (self.state != IURequestTaskStateRunning) [self start];
+}
+
 #define IUNLog(FORMAT, ...) printf("\n========\n%s\n========\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 - (void)start {
     if ([[IURequestorRegistrar sharedInstance].requestors count]) {
@@ -134,16 +145,19 @@
     [sessionManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html",@"text/plain", @"charset=UTF-8", @"image/*", nil]];
     
     /* setup blocks */
+    __weak typeof(self) ws = self;
     // completion
     void(^comletion)(void) = ^{
+        if (config.completion) config.completion();
         [self _endRequestors:requestors];
         self.task = nil;
     };
     // success
     void(^success)(NSURLSessionDataTask *, id) = ^(NSURLSessionDataTask *task, id responseObject) {
-        IURequestResult *result = [config.resultClass resultWithConfig:config task:task responseObject:responseObject error:nil request:self];
+        IURequestResult *result = [config.resultClass resultWithConfig:config task:task responseObject:responseObject error:nil request:ws];
+        ws.result = result;
         if (config.enableRequestLog) {
-            IUNLog(@"✅request success\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request response : %@", [config absoluteUrl], [config methodNameString], [config parameters], result.responseObject);
+            IUNLog(@"✅request success\n➡️request url : %@\n➡️request method : %@\n➡️request headers : %@\n➡️request parameters : %@\n➡️response headers : %@\n➡️response object : %@", [config absoluteUrl], [config methodNameString], [config headers], [config parameters], result.responseHeaders, result.responseObject);
         }
         [IURequestorRegistrar sharedInstance].requestors = self.requestors;
         
@@ -160,18 +174,18 @@
         
         [[IURequestorRegistrar sharedInstance] clear];
         comletion();
-        self.result = result;
     };
     // failure
     void(^failure)(NSURLSessionDataTask *, NSError *) = ^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        IURequestResult *result = [config.resultClass resultWithConfig:config task:task responseObject:nil error:error request:self];
+        IURequestResult *result = [config.resultClass resultWithConfig:config task:task responseObject:nil error:error request:ws];
+        ws.result = result;
         if (task.state == NSURLSessionTaskStateCanceling) {
             if (config.enableRequestLog) {
-                IUNLog(@"❎request cancelled\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@", [config absoluteUrl], [config methodNameString], [config parameters]);
+                IUNLog(@"❎request cancelled\n➡️request url : %@\n➡️request method : %@\n➡️request headers : %@\n➡️request parameters : %@", [config absoluteUrl], [config methodNameString], [config headers], [config parameters]);
             }
         } else {
             if (config.enableRequestLog) {
-                IUNLog(@"⚠️request failure\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@\n➡️request error : %@", [config absoluteUrl], [config methodNameString], [config parameters], error);
+                IUNLog(@"⚠️request failure\n➡️request url : %@\n➡️request method : %@\n➡️request headers : %@\n➡️request parameters : %@\n➡️request error : %@", [config absoluteUrl], [config methodNameString], [config headers], [config parameters], error);
             }
             
             if (!config.globalFailure || config.globalFailure(result)) {
@@ -185,13 +199,12 @@
             }
         }
         comletion();
-        self.result = result;
     };
     
     /* begin request */
     [self _startRequestors:requestors];
     if (config.enableRequestLog) {
-        IUNLog(@"🕑request start\n➡️request url : %@\n➡️method : %@\n➡️parameter : %@", [config absoluteUrl], [config methodNameString], [config parameters]);
+        IUNLog(@"🕑request start\n➡️request url : %@\n➡️request method : %@\n➡️request headers : %@\n➡️request parameters : %@", [config absoluteUrl], [config methodNameString], [config headers], [config parameters]);
     }
     
     if (config.fakeRequest) {
