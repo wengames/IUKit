@@ -30,7 +30,11 @@
         NSArray *urlTypes = [[NSBundle mainBundle] infoDictionary][@"CFBundleURLTypes"];
         NSMutableArray *urlSchemes = [@[] mutableCopy];
         for (NSDictionary *urlType in urlTypes) {
-            if (urlType[@"CFBundleURLSchemes"]) [urlSchemes addObject:urlType[@"CFBundleURLSchemes"]];
+            @try {
+                for (NSString *scheme in urlType[@"CFBundleURLSchemes"]) {
+                    [urlSchemes addObject:scheme];
+                }
+            } @catch (NSException *exception) {}
         }
         _urlSchemes = [urlSchemes copy];
         _aliasMap   = [@{} mutableCopy];
