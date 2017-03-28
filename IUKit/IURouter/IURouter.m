@@ -32,7 +32,7 @@
         for (NSDictionary *urlType in urlTypes) {
             @try {
                 for (NSString *scheme in urlType[@"CFBundleURLSchemes"]) {
-                    [urlSchemes addObject:scheme];
+                    [urlSchemes addObject:[scheme lowercaseString]];
                 }
             } @catch (NSException *exception) {}
         }
@@ -92,7 +92,7 @@
     NSArray *components = [url componentsSeparatedByString:@"://"];
     if ([components count] > 2 ||
         [components count] == 0 ||
-        ([components count] == 2 && ![self.urlSchemes containsObject:[components firstObject]])) {
+        ([components count] == 2 && ![self.urlSchemes containsObject:[[components firstObject] lowercaseString]])) {
         return nil;
     }
     
