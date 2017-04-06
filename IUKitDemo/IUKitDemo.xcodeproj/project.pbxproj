@@ -132,6 +132,7 @@
 		844398C41E53E84700EA8989 /* NSURL+IUProtect.m in Sources */ = {isa = PBXBuildFile; fileRef = 844398C31E53E84700EA8989 /* NSURL+IUProtect.m */; };
 		844398C71E53F0D500EA8989 /* IUBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 844398C61E53F0D500EA8989 /* IUBaseModel.m */; };
 		844398CD1E53FA0500EA8989 /* TestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 844398CC1E53FA0500EA8989 /* TestModel.m */; };
+		84B647311E8B87AA00225645 /* TestLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B647301E8B87AA00225645 /* TestLabel.m */; };
 		84BAD4121E541FA8006EF1C8 /* UIViewController+IUModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4111E541FA8006EF1C8 /* UIViewController+IUModalTransition.m */; };
 		84BAD4151E542243006EF1C8 /* UIViewController+IUKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4141E542243006EF1C8 /* UIViewController+IUKeyboard.m */; };
 		84BAD4181E542456006EF1C8 /* UIViewController+IUContainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAD4171E542456006EF1C8 /* UIViewController+IUContainView.m */; };
@@ -414,6 +415,8 @@
 		844398C61E53F0D500EA8989 /* IUBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IUBaseModel.m; sourceTree = "<group>"; };
 		844398CB1E53FA0500EA8989 /* TestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestModel.h; sourceTree = "<group>"; };
 		844398CC1E53FA0500EA8989 /* TestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestModel.m; sourceTree = "<group>"; };
+		84B6472F1E8B87AA00225645 /* TestLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestLabel.h; sourceTree = "<group>"; };
+		84B647301E8B87AA00225645 /* TestLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestLabel.m; sourceTree = "<group>"; };
 		84BAD4101E541FA8006EF1C8 /* UIViewController+IUModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUModalTransition.h"; sourceTree = "<group>"; };
 		84BAD4111E541FA8006EF1C8 /* UIViewController+IUModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IUModalTransition.m"; sourceTree = "<group>"; };
 		84BAD4131E542243006EF1C8 /* UIViewController+IUKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IUKeyboard.h"; sourceTree = "<group>"; };
@@ -529,6 +532,8 @@
 				844397171E51BABF00EA8989 /* AppDelegate.m */,
 				844397191E51BABF00EA8989 /* ViewController.h */,
 				8443971A1E51BABF00EA8989 /* ViewController.m */,
+				84B6472F1E8B87AA00225645 /* TestLabel.h */,
+				84B647301E8B87AA00225645 /* TestLabel.m */,
 				844398CB1E53FA0500EA8989 /* TestModel.h */,
 				844398CC1E53FA0500EA8989 /* TestModel.m */,
 				84BAD52D1E557A51006EF1C8 /* TestRequestResult.h */,
@@ -1086,6 +1091,7 @@
 				844398B01E52F40200EA8989 /* IURequestUploadFile.m in Sources */,
 				842456751E56B4C90022C648 /* SDWebImageDecoder.m in Sources */,
 				844398A01E529BCE00EA8989 /* NSObject+MJProperty.m in Sources */,
+				84B647311E8B87AA00225645 /* TestLabel.m in Sources */,
 				84BAD41B1E5428F2006EF1C8 /* NSString+IUJsonTransform.m in Sources */,
 				844398031E51CC0000EA8989 /* UIViewController+IUMagicTransition.m in Sources */,
 				844397AC1E51C02F00EA8989 /* UIImageView+IUChain.m in Sources */,

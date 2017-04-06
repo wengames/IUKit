@@ -10,6 +10,7 @@
 #import "TestRequestResult.h"
 #import "UIImageView+WebCache.h"
 #import <CoreMotion/CoreMotion.h>
+#import "TestLabel.h"
 
 @interface ViewController ()
 {
@@ -33,13 +34,13 @@
     
     [IURequestConfig globalConfig].enableRequestLog = YES;
     
-    NSLog(@"%@", [NSURL URLWithString:@"http://多舒服的方式地方?多舒服就离开=都是发挥空间"].absoluteString);
-    
     IURequestConfig *config = [IURequestConfig config];
   
     NSLog(@"%@", config);
     IURequestConfig *config2 = [config deepCopy];
     NSLog(@"%@", config2);
+    
+    [self.view addSubview:[[TestLabel alloc] initWithFrame:CGRectMake(100, 200, 100, 100)].setText(@"213").setBackgroundColor([UIColor greenColor])];
 
     [self.view addSubview:[[UITextField alloc] initWithFrame:CGRectMake(100, 100, 100, 100)].setClearButtonMode(UITextFieldViewModeWhileEditing).setBackgroundColor([UIColor cyanColor]).setMaxCharacterLength(5)];
     
@@ -54,16 +55,6 @@
 //    self.navigationController.navigationBar
 //    [self registerPreviewingWithSourceView:_v];
     
-    UIView *dl;
-    [self.view addSubview:[IUDashLineView dashLine].setFrame(CGRectMake(0, 250, 100, 1)).assign(&dl)];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:2 delay:1 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            dl.frame = CGRectMake(0, 250, 300, 1);
-        } completion:nil];
-    });
-    
-    [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor redColor];
-    [self.navigationController.view addSubview:[[UITextView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)]];
 }
 
 //- (UIViewController *)viewControllerForPreviewingWithSourceView:(UIView *)sourceView {
