@@ -41,9 +41,16 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
     return self;
 }
 
+- (float)duration {
+    if ([[UIDevice currentDevice].systemVersion floatValue] < 8.0) {
+        return 0;
+    }
+    return _duration;
+}
+
 #pragma mark UIViewControllerTransitioningDelegate
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
-    return _duration;
+    return self.duration;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
@@ -212,7 +219,8 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
         
         CGRect fromInitialFrame = [transitionContext initialFrameForViewController:fromViewController];
         CGRect toFinalFrame = [transitionContext finalFrameForViewController:toViewController];
-        
+        if (CGRectEqualToRect(CGRectZero, toFinalFrame)) toFinalFrame = fromInitialFrame;
+
         _IUTransitionPrepare    custom_prepare    = ^{};
         _IUTransitionAnimations custom_animations = ^{};
         _IUTransitionCompletion custom_completion = ^(BOOL finished){};
@@ -269,7 +277,11 @@ typedef void(^_IUTransitionCompletion)(BOOL finished);
                             toViewController.view.alpha = 0.0;
                         };
                         custom_animations = ^{
+                            toViewController.view.frame = toFinalFrame;
                             toViewController.view.alpha = 1.0;
+                        };
+                        custom_completion = ^(BOOL finished) {
+                            toViewController.view.frame = toFinalFrame;
                         };
                     }
                         break;
