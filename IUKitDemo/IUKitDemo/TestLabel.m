@@ -71,8 +71,6 @@
     NSLog(@"%@: %@", @"cut", sender);
 }
 
-UIResponderStandardEditActions
-
 @end
 
 @implementation UITextField (TTT)

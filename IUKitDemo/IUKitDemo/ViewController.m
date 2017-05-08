@@ -11,6 +11,8 @@
 #import "UIImageView+WebCache.h"
 #import <CoreMotion/CoreMotion.h>
 #import "TestLabel.h"
+#import <UserNotifications/UserNotifications.h>
+#import "PushedViewController.h"
 
 @interface ViewController ()
 {
@@ -24,10 +26,48 @@
 
 @implementation ViewController
 
+- (void)push {
+    [self.navigationController pushViewController:[[PushedViewController alloc] init] animated:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UITextView *t = [[UITextView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
+    t.backgroundColor = [UIColor cyanColor];
+    [self.view addSubview:t];
+    
+    UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
+    b.frame = CGRectMake(100, 200, 100, 100);
+    [b addTarget:self action:@selector(push) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:b];
+
+    return;
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"G yyyy MMMM dd EEEE 'T' aa h:mm:ss.SSS ZZZ";
+    df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+    NSLog(@"%@", [df stringFromDate:[NSDate date]]);
+    
+    NSMutableString *mutableString = [NSMutableString stringWithString:@""];
+    CFStringTransform((CFMutableStringRef)mutableString, NULL, kCFStringTransformToLatin, false);
+    mutableString = (NSMutableString *)[mutableString stringByFoldingWithOptions:NSDiacriticInsensitiveSearch locale:[NSLocale currentLocale]];
+    NSLog(@"%@", mutableString);
+    
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge categories:nil]];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 123456;
     self.navigationItem.title = @"esdfsdf";
+    
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = @"title";
+    content.subtitle = @"subtitle";
+    content.body = @"body";
+    
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:@"local" content:content trigger:[UNTimeIntervalNotificationTrigger triggerWithTimeInterval:2 repeats:NO]];
+    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+        NSLog(@"%@", error);
+    }];
     
     _s = [[UISearchController alloc] initWithSearchResultsController:nil];
     [self.view addSubview:_s.searchBar];

@@ -187,7 +187,10 @@ static char TAG_ORIGIN_FRAME;
     self._isKeyboardVisible = NO;
     
     self.keyboardHeight = 0;
-    self.view.frame = self._originFrame;
+    // UIInputWindowController
+    if (![NSStringFromClass(self.class) hasPrefix:@"UIInput"]) {
+        self.view.frame = self._originFrame;
+    }
     self._editingView = nil;
     
     [self keyboardHeightChanged];
