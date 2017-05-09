@@ -21,13 +21,14 @@ static char TAG_NAVIGATION_BAR_HIDDEN;
 
 - (void)iuNavigationBarHidden_UIViewController_viewWillAppear:(BOOL)animated {
     [self iuNavigationBarHidden_UIViewController_viewWillAppear:animated];
-    if ([self.parentViewController isKindOfClass:[UINavigationController class]])
+    if (objc_getAssociatedObject(self, &TAG_NAVIGATION_BAR_HIDDEN) && [self.parentViewController isKindOfClass:[UINavigationController class]])
         [self.navigationController setNavigationBarHidden:self.navigationBarHidden animated:animated];
 }
 
 - (void)iuNavigationBarHidden_UIViewController_viewDidAppear:(BOOL)animated {
     [self iuNavigationBarHidden_UIViewController_viewDidAppear:animated];
-    if ([self.parentViewController isKindOfClass:[UINavigationController class]])
+    
+    if (objc_getAssociatedObject(self, &TAG_NAVIGATION_BAR_HIDDEN) && [self.parentViewController isKindOfClass:[UINavigationController class]])
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.navigationController setNavigationBarHidden:self.navigationBarHidden animated:NO];
         });

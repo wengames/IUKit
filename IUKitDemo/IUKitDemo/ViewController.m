@@ -33,6 +33,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _v = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
+    _v.backgroundColor = [UIColor lightGrayColor];
+    _v.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:_v];
+    
+    return;
+    
     UITextView *t = [[UITextView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
     t.backgroundColor = [UIColor cyanColor];
     [self.view addSubview:t];
@@ -95,6 +102,19 @@
 //    self.navigationController.navigationBar
 //    [self registerPreviewingWithSourceView:_v];
     
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    UIImagePickerController *vc = [[UIImagePickerController alloc] init];
+    vc.delegate = self;
+    vc.sourceType = UIImagePickerControllerSourceTypeCamera;
+    vc.allowsEditing = NO;
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    _v.image = image;
 }
 
 //- (UIViewController *)viewControllerForPreviewingWithSourceView:(UIView *)sourceView {
