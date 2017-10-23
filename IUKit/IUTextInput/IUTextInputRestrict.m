@@ -50,7 +50,7 @@
 
     // set text immediately if the text field is not the first responder
     if (!textField.isFirstResponder) {
-        textField.text = text;
+        if (![text isEqualToString:textField.text]) textField.text = text;
         return;
     }
     

@@ -21,6 +21,7 @@
     UISearchController *_s;
     CMMotionManager *_motionManager;
     CGAffineTransform _transform;
+    int _i;
 }
 @end
 
@@ -30,8 +31,37 @@
     [self.navigationController pushViewController:[[PushedViewController alloc] init] animated:YES];
 }
 
+- (int)i {
+    @try {
+        return _i;
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        _i++;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _i = 100;
+    _i = _i + [self i];
+    NSLog(@"%d", _i);
+    
+    _i = 100;
+    _i = [self i] + _i;
+    NSLog(@"%d", _i);
+
+    _i = 100;
+    _i += [self i];
+    NSLog(@"%d", _i);
+    
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    scrollView.contentInset = UIEdgeInsetsMake(50, 0, 0, 0);
+    scrollView.contentSize = CGSizeMake(100, 200);
+    [self.view addSubview:scrollView];
+    [scrollView addSubview:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)].setBackgroundColor([UIColor greenColor])];
+    NSLog(@"%f",scrollView.contentSize.height);
     
     _v = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
     _v.backgroundColor = [UIColor lightGrayColor];
